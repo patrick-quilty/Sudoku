@@ -1,0 +1,113 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+
+<GridPane fx:controller="sample.Controller"
+          xmlns:fx="http://javafx.com/fxml" alignment = "TOP_LEFT" hgap="1" vgap="1">
+    <!--gridLinesVisible="true"-->
+
+    <Button fx:id="step1Button" text="Step 1" maxWidth="100" GridPane.rowIndex="14" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.columnSpan="3" onAction="#onButtonClicked"> </Button>
+    <Button fx:id="step2Button" text="Step 2" maxWidth="100" GridPane.rowIndex="14" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.columnSpan="3" onAction="#onButtonClicked"> </Button>
+    <Button fx:id="step3Button" text="Step 3" maxWidth="100" GridPane.rowIndex="14" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.columnSpan="3" onAction="#onButtonClicked"> </Button>
+
+
+    <TextField fx:id="tf11" maxWidth="21.5" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf12" maxWidth="21.5" GridPane.rowIndex="1" GridPane.columnIndex="2" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf13" maxWidth="21.5" GridPane.rowIndex="1" GridPane.columnIndex="3" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf14" maxWidth="21.5" GridPane.rowIndex="1" GridPane.columnIndex="6" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf15" maxWidth="21.5" GridPane.rowIndex="1" GridPane.columnIndex="7" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf16" maxWidth="21.5" GridPane.rowIndex="1" GridPane.columnIndex="8" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf17" maxWidth="21.5" GridPane.rowIndex="1" GridPane.columnIndex="11" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf18" maxWidth="21.5" GridPane.rowIndex="1" GridPane.columnIndex="12" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf19" maxWidth="21.5" GridPane.rowIndex="1" GridPane.columnIndex="13" GridPane.halignment="CENTER"> </TextField>
+
+    <TextField fx:id="tf21" maxWidth="21.5" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf22" maxWidth="21.5" GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf23" maxWidth="21.5" GridPane.rowIndex="2" GridPane.columnIndex="3" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf24" maxWidth="21.5" GridPane.rowIndex="2" GridPane.columnIndex="6" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf25" maxWidth="21.5" GridPane.rowIndex="2" GridPane.columnIndex="7" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf26" maxWidth="21.5" GridPane.rowIndex="2" GridPane.columnIndex="8" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf27" maxWidth="21.5" GridPane.rowIndex="2" GridPane.columnIndex="11" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf28" maxWidth="21.5" GridPane.rowIndex="2" GridPane.columnIndex="12" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf29" maxWidth="21.5" GridPane.rowIndex="2" GridPane.columnIndex="13" GridPane.halignment="CENTER"> </TextField>
+
+    <TextField fx:id="tf31" maxWidth="21.5" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf32" maxWidth="21.5" GridPane.rowIndex="3" GridPane.columnIndex="2" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf33" maxWidth="21.5" GridPane.rowIndex="3" GridPane.columnIndex="3" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf34" maxWidth="21.5" GridPane.rowIndex="3" GridPane.columnIndex="6" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf35" maxWidth="21.5" GridPane.rowIndex="3" GridPane.columnIndex="7" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf36" maxWidth="21.5" GridPane.rowIndex="3" GridPane.columnIndex="8" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf37" maxWidth="21.5" GridPane.rowIndex="3" GridPane.columnIndex="11" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf38" maxWidth="21.5" GridPane.rowIndex="3" GridPane.columnIndex="12" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf39" maxWidth="21.5" GridPane.rowIndex="3" GridPane.columnIndex="13" GridPane.halignment="CENTER"> </TextField>
+
+    <TextField fx:id="tf41" maxWidth="21.5" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf42" maxWidth="21.5" GridPane.rowIndex="6" GridPane.columnIndex="2" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf43" maxWidth="21.5" GridPane.rowIndex="6" GridPane.columnIndex="3" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf44" maxWidth="21.5" GridPane.rowIndex="6" GridPane.columnIndex="6" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf45" maxWidth="21.5" GridPane.rowIndex="6" GridPane.columnIndex="7" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf46" maxWidth="21.5" GridPane.rowIndex="6" GridPane.columnIndex="8" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf47" maxWidth="21.5" GridPane.rowIndex="6" GridPane.columnIndex="11" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf48" maxWidth="21.5" GridPane.rowIndex="6" GridPane.columnIndex="12" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf49" maxWidth="21.5" GridPane.rowIndex="6" GridPane.columnIndex="13" GridPane.halignment="CENTER"> </TextField>
+
+    <TextField fx:id="tf51" maxWidth="21.5" GridPane.rowIndex="7" GridPane.columnIndex="1" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf52" maxWidth="21.5" GridPane.rowIndex="7" GridPane.columnIndex="2" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf53" maxWidth="21.5" GridPane.rowIndex="7" GridPane.columnIndex="3" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf54" maxWidth="21.5" GridPane.rowIndex="7" GridPane.columnIndex="6" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf55" maxWidth="21.5" GridPane.rowIndex="7" GridPane.columnIndex="7" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf56" maxWidth="21.5" GridPane.rowIndex="7" GridPane.columnIndex="8" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf57" maxWidth="21.5" GridPane.rowIndex="7" GridPane.columnIndex="11" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf58" maxWidth="21.5" GridPane.rowIndex="7" GridPane.columnIndex="12" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf59" maxWidth="21.5" GridPane.rowIndex="7" GridPane.columnIndex="13" GridPane.halignment="CENTER"> </TextField>
+
+    <TextField fx:id="tf61" maxWidth="21.5" GridPane.rowIndex="8" GridPane.columnIndex="1" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf62" maxWidth="21.5" GridPane.rowIndex="8" GridPane.columnIndex="2" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf63" maxWidth="21.5" GridPane.rowIndex="8" GridPane.columnIndex="3" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf64" maxWidth="21.5" GridPane.rowIndex="8" GridPane.columnIndex="6" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf65" maxWidth="21.5" GridPane.rowIndex="8" GridPane.columnIndex="7" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf66" maxWidth="21.5" GridPane.rowIndex="8" GridPane.columnIndex="8" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf67" maxWidth="21.5" GridPane.rowIndex="8" GridPane.columnIndex="11" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf68" maxWidth="21.5" GridPane.rowIndex="8" GridPane.columnIndex="12" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf69" maxWidth="21.5" GridPane.rowIndex="8" GridPane.columnIndex="13" GridPane.halignment="CENTER"> </TextField>
+
+    <TextField fx:id="tf71" maxWidth="21.5" GridPane.rowIndex="11" GridPane.columnIndex="1" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf72" maxWidth="21.5" GridPane.rowIndex="11" GridPane.columnIndex="2" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf73" maxWidth="21.5" GridPane.rowIndex="11" GridPane.columnIndex="3" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf74" maxWidth="21.5" GridPane.rowIndex="11" GridPane.columnIndex="6" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf75" maxWidth="21.5" GridPane.rowIndex="11" GridPane.columnIndex="7" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf76" maxWidth="21.5" GridPane.rowIndex="11" GridPane.columnIndex="8" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf77" maxWidth="21.5" GridPane.rowIndex="11" GridPane.columnIndex="11" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf78" maxWidth="21.5" GridPane.rowIndex="11" GridPane.columnIndex="12" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf79" maxWidth="21.5" GridPane.rowIndex="11" GridPane.columnIndex="13" GridPane.halignment="CENTER"> </TextField>
+
+    <TextField fx:id="tf81" maxWidth="21.5" GridPane.rowIndex="12" GridPane.columnIndex="1" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf82" maxWidth="21.5" GridPane.rowIndex="12" GridPane.columnIndex="2" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf83" maxWidth="21.5" GridPane.rowIndex="12" GridPane.columnIndex="3" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf84" maxWidth="21.5" GridPane.rowIndex="12" GridPane.columnIndex="6" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf85" maxWidth="21.5" GridPane.rowIndex="12" GridPane.columnIndex="7" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf86" maxWidth="21.5" GridPane.rowIndex="12" GridPane.columnIndex="8" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf87" maxWidth="21.5" GridPane.rowIndex="12" GridPane.columnIndex="11" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf88" maxWidth="21.5" GridPane.rowIndex="12" GridPane.columnIndex="12" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf89" maxWidth="21.5" GridPane.rowIndex="12" GridPane.columnIndex="13" GridPane.halignment="CENTER"> </TextField>
+
+    <TextField fx:id="tf91" maxWidth="21.5" GridPane.rowIndex="13" GridPane.columnIndex="1" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf92" maxWidth="21.5" GridPane.rowIndex="13" GridPane.columnIndex="2" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf93" maxWidth="21.5" GridPane.rowIndex="13" GridPane.columnIndex="3" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf94" maxWidth="21.5" GridPane.rowIndex="13" GridPane.columnIndex="6" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf95" maxWidth="21.5" GridPane.rowIndex="13" GridPane.columnIndex="7" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf96" maxWidth="21.5" GridPane.rowIndex="13" GridPane.columnIndex="8" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf97" maxWidth="21.5" GridPane.rowIndex="13" GridPane.columnIndex="11" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf98" maxWidth="21.5" GridPane.rowIndex="13" GridPane.columnIndex="12" GridPane.halignment="CENTER"> </TextField>
+    <TextField fx:id="tf99" maxWidth="21.5" GridPane.rowIndex="13" GridPane.columnIndex="13" GridPane.halignment="CENTER"> </TextField>
+
+
+
+
+
+</GridPane>
