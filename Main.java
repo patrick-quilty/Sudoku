@@ -2,130 +2,24 @@ package sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class Main extends Application {
-    public TextField tf11 = new TextField();
-    public TextField tf12 = new TextField();
-    public TextField tf13 = new TextField();
-    public TextField tf14 = new TextField();
-    public TextField tf15 = new TextField();
-    public TextField tf16 = new TextField();
-    public TextField tf17 = new TextField();
-    public TextField tf18 = new TextField();
-    public TextField tf19 = new TextField();
-    public TextField tf21 = new TextField();
-    public TextField tf22 = new TextField();
-    public TextField tf23 = new TextField();
-    public TextField tf24 = new TextField();
-    public TextField tf25 = new TextField();
-    public TextField tf26 = new TextField();
-    public TextField tf27 = new TextField();
-    public TextField tf28 = new TextField();
-    public TextField tf29 = new TextField();
-    public TextField tf31 = new TextField();
-    public TextField tf32 = new TextField();
-    public TextField tf33 = new TextField();
-    public TextField tf34 = new TextField();
-    public TextField tf35 = new TextField();
-    public TextField tf36 = new TextField();
-    public TextField tf37 = new TextField();
-    public TextField tf38 = new TextField();
-    public TextField tf39 = new TextField();
-    public TextField tf41 = new TextField();
-    public TextField tf42 = new TextField();
-    public TextField tf43 = new TextField();
-    public TextField tf44 = new TextField();
-    public TextField tf45 = new TextField();
-    public TextField tf46 = new TextField();
-    public TextField tf47 = new TextField();
-    public TextField tf48 = new TextField();
-    public TextField tf49 = new TextField();
-    public TextField tf51 = new TextField();
-    public TextField tf52 = new TextField();
-    public TextField tf53 = new TextField();
-    public TextField tf54 = new TextField();
-    public TextField tf55 = new TextField();
-    public TextField tf56 = new TextField();
-    public TextField tf57 = new TextField();
-    public TextField tf58 = new TextField();
-    public TextField tf59 = new TextField();
-    public TextField tf61 = new TextField();
-    public TextField tf62 = new TextField();
-    public TextField tf63 = new TextField();
-    public TextField tf64 = new TextField();
-    public TextField tf65 = new TextField();
-    public TextField tf66 = new TextField();
-    public TextField tf67 = new TextField();
-    public TextField tf68 = new TextField();
-    public TextField tf69 = new TextField();
-    public TextField tf71 = new TextField();
-    public TextField tf72 = new TextField();
-    public TextField tf73 = new TextField();
-    public TextField tf74 = new TextField();
-    public TextField tf75 = new TextField();
-    public TextField tf76 = new TextField();
-    public TextField tf77 = new TextField();
-    public TextField tf78 = new TextField();
-    public TextField tf79 = new TextField();
-    public TextField tf81 = new TextField();
-    public TextField tf82 = new TextField();
-    public TextField tf83 = new TextField();
-    public TextField tf84 = new TextField();
-    public TextField tf85 = new TextField();
-    public TextField tf86 = new TextField();
-    public TextField tf87 = new TextField();
-    public TextField tf88 = new TextField();
-    public TextField tf89 = new TextField();
-    public TextField tf91 = new TextField();
-    public TextField tf92 = new TextField();
-    public TextField tf93 = new TextField();
-    public TextField tf94 = new TextField();
-    public TextField tf95 = new TextField();
-    public TextField tf96 = new TextField();
-    public TextField tf97 = new TextField();
-    public TextField tf98 = new TextField();
-    public TextField tf99 = new TextField();
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("grid.fxml"));
-        primaryStage.setTitle("Sudoku Guru");
-        primaryStage.setScene(new Scene(root, 212, 500));
-        primaryStage.show();
-    }
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    //Declarations
-    @FXML
-    private Button inputBoard;
-    @FXML
-    private Button step2Button;
-    @FXML
-    private Button step3Button;
-
-    //Buttons
-    public void onButtonClicked(ActionEvent buttonClicked) {
-        if (buttonClicked.getSource().equals(inputBoard)) { inputBoard(); }
-        if (buttonClicked.getSource().equals(step2Button)) { step3(); }
-        if (buttonClicked.getSource().equals(step3Button)) { solveBoard(); }
-    }
-
-    public String[] board = new String[100];
-    public String[][] groups = new String[27][];
-    public String[][] relations = new String[100][];
-
-    public void groupsDecs() {
+    // Declarations
+    private int clearedCount = 0;
+    private Button[] button = new Button[3];
+    private String[] board = new String[100];
+    private String[][] groups = new String[27][];
+    private String[][] relations = new String[100][];
+    private TextField[] textFields = new TextField[100];
+    private void groupsDecs() {
         groups[0] = new String[]{"11", "12", "13", "14", "15", "16", "17", "18", "19"};
         groups[1] = new String[]{"21", "22", "23", "24", "25", "26", "27", "28", "29"};
         groups[2] = new String[]{"31", "32", "33", "34", "35", "36", "37", "38", "39"};
@@ -246,418 +140,681 @@ public class Main extends Application {
         relations[98] = new String[]{"18", "28", "38", "48", "58", "68", "77", "78", "79", "87", "88", "89", "91", "92", "93", "94", "95", "96", "97", "99", "100"};
         relations[99] = new String[]{"19", "29", "39", "49", "59", "69", "77", "78", "79", "87", "88", "89", "91", "92", "93", "94", "95", "96", "97", "98", "100"};
     }
+    public static void main(String[] args) {
+        launch(args);
+    }
 
 
-    //add up/down/left/right key press to move you around the board functionality
-    //show candidate numbers in cell
+    // Build Form
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Sudoku Guru");
+        GridPane root = new GridPane();
+        root.setHgap(1);
+        root.setVgap(1);
+        root.setAlignment(Pos.TOP_LEFT);
+        // Basic setup for the Form
+
+        for (int x = 11; x <= 99; x++) {
+            if (x % 10 != 0) {
+                textFields[x] = new TextField();
+            }
+        } // Initialize textFields
+
+        for (int x = 11; x <= 99; x++) {
+            if (x % 10 != 0) {
+                int addRow = ((x - 10) / 30) * 2;
+                int addCol = (((x - 1) % 10) / 3) * 2;
+                root.add(textFields[x], (x % 10) + addCol, (x / 10) + addRow);
+                textFields[x].setMinWidth(21.5);
+                textFields[x].setMaxWidth(21.5);
+                textFields[x].setText(board[x]);
+            }
+        } // Place textFields
+
+        button[0] = new Button("Input");
+        button[1] = new Button("Clear");
+        button[2] = new Button("Solve");
+        // Initialize buttons
+
+        for (int x = 0; x < button.length; x++) {
+            button[x].setMinWidth(68);
+            button[x].setOnAction(this::onButtonClicked);
+            root.add(button[x],1 + (x * 5),14 + (x / 3), 3, 1);
+        } // Place buttons
+
+        primaryStage.setScene(new Scene(root, 212, 500));
+        primaryStage.show();
+        // Display Form
+    }
 
 
-    public void inputBoard() {
-        // 123456789123456789123456789123456789123456789123456789123456789123456789123456789
-        if (tf11.getLength() == 81) {
+    // Buttons
+    private void onButtonClicked(ActionEvent buttonClicked) {
+        if (buttonClicked.getSource() == button[0]) { inputBoard(); }
+        if (buttonClicked.getSource() == button[1]) { clearBoard(); }
+        if (buttonClicked.getSource() == button[2]) { solveBoard(); }
+    }
+
+
+    // Board Handling
+    private void inputBoard() {
+        // If importing a game string then break up the string and assign it to the board array
+        // If not then just assign to the board array
+        if (textFields[11].getLength() == 81) {
             for (int x = 99; x >= 11; x--) {
                 if (x % 10 != 0) {
-                    board[x] = tf11.getText().substring(tf11.getLength() - 1);
-                    tf11.setText(tf11.getText(0, tf11.getLength() - 1));
+                    board[x] = textFields[11].getText().substring(textFields[11].getLength() - 1);
+                    textFields[11].setText(textFields[11].getText(0, textFields[11].getLength() - 1));
                 }
             }
         } else {
-            board[99] = tf99.getText();
-            board[98] = tf98.getText();
-            board[97] = tf97.getText();
-            board[96] = tf96.getText();
-            board[95] = tf95.getText();
-            board[94] = tf94.getText();
-            board[93] = tf93.getText();
-            board[92] = tf92.getText();
-            board[91] = tf91.getText();
-            board[89] = tf89.getText();
-            board[88] = tf88.getText();
-            board[87] = tf87.getText();
-            board[86] = tf86.getText();
-            board[85] = tf85.getText();
-            board[84] = tf84.getText();
-            board[83] = tf83.getText();
-            board[82] = tf82.getText();
-            board[81] = tf81.getText();
-            board[79] = tf79.getText();
-            board[78] = tf78.getText();
-            board[77] = tf77.getText();
-            board[76] = tf76.getText();
-            board[75] = tf75.getText();
-            board[74] = tf74.getText();
-            board[73] = tf73.getText();
-            board[72] = tf72.getText();
-            board[71] = tf71.getText();
-            board[69] = tf69.getText();
-            board[68] = tf68.getText();
-            board[67] = tf67.getText();
-            board[66] = tf66.getText();
-            board[65] = tf65.getText();
-            board[64] = tf64.getText();
-            board[63] = tf63.getText();
-            board[62] = tf62.getText();
-            board[61] = tf61.getText();
-            board[59] = tf59.getText();
-            board[58] = tf58.getText();
-            board[57] = tf57.getText();
-            board[56] = tf56.getText();
-            board[55] = tf55.getText();
-            board[54] = tf54.getText();
-            board[53] = tf53.getText();
-            board[52] = tf52.getText();
-            board[51] = tf51.getText();
-            board[49] = tf49.getText();
-            board[48] = tf48.getText();
-            board[47] = tf47.getText();
-            board[46] = tf46.getText();
-            board[45] = tf45.getText();
-            board[44] = tf44.getText();
-            board[43] = tf43.getText();
-            board[42] = tf42.getText();
-            board[41] = tf41.getText();
-            board[39] = tf39.getText();
-            board[38] = tf38.getText();
-            board[37] = tf37.getText();
-            board[36] = tf36.getText();
-            board[35] = tf35.getText();
-            board[34] = tf34.getText();
-            board[33] = tf33.getText();
-            board[32] = tf32.getText();
-            board[31] = tf31.getText();
-            board[29] = tf29.getText();
-            board[28] = tf28.getText();
-            board[27] = tf27.getText();
-            board[26] = tf26.getText();
-            board[25] = tf25.getText();
-            board[24] = tf24.getText();
-            board[23] = tf23.getText();
-            board[22] = tf22.getText();
-            board[21] = tf21.getText();
-            board[19] = tf19.getText();
-            board[18] = tf18.getText();
-            board[17] = tf17.getText();
-            board[16] = tf16.getText();
-            board[15] = tf15.getText();
-            board[14] = tf14.getText();
-            board[13] = tf13.getText();
-            board[12] = tf12.getText();
-            board[11] = tf11.getText();
-        }
-        outputBoard();
-    }
-    public void outputBoard() {
-        for (int x = 99; x >= 11; x--) {
-            if (x % 10 != 0) {
-                if (board[x].equals("1") || board[x].equals("2") || board[x].equals("3") ||
-                        board[x].equals("4") || board[x].equals("5") || board[x].equals("6") ||
-                        board[x].equals("7") || board[x].equals("8") || board[x].equals("9")) {
-                } else {
-                    board[x] = "";
+            for (int x = 99; x >= 11; x--) {
+                if (x % 10 != 0) {
+                    board[x] = textFields[x].getText();
                 }
             }
         }
-        tf99.setText(board[99]);
-        tf98.setText(board[98]);
-        tf97.setText(board[97]);
-        tf96.setText(board[96]);
-        tf95.setText(board[95]);
-        tf94.setText(board[94]);
-        tf93.setText(board[93]);
-        tf92.setText(board[92]);
-        tf91.setText(board[91]);
-        tf89.setText(board[89]);
-        tf88.setText(board[88]);
-        tf87.setText(board[87]);
-        tf86.setText(board[86]);
-        tf85.setText(board[85]);
-        tf84.setText(board[84]);
-        tf83.setText(board[83]);
-        tf82.setText(board[82]);
-        tf81.setText(board[81]);
-        tf79.setText(board[79]);
-        tf78.setText(board[78]);
-        tf77.setText(board[77]);
-        tf76.setText(board[76]);
-        tf75.setText(board[75]);
-        tf74.setText(board[74]);
-        tf73.setText(board[73]);
-        tf72.setText(board[72]);
-        tf71.setText(board[71]);
-        tf69.setText(board[69]);
-        tf68.setText(board[68]);
-        tf67.setText(board[67]);
-        tf66.setText(board[66]);
-        tf65.setText(board[65]);
-        tf64.setText(board[64]);
-        tf63.setText(board[63]);
-        tf62.setText(board[62]);
-        tf61.setText(board[61]);
-        tf59.setText(board[59]);
-        tf58.setText(board[58]);
-        tf57.setText(board[57]);
-        tf56.setText(board[56]);
-        tf55.setText(board[55]);
-        tf54.setText(board[54]);
-        tf53.setText(board[53]);
-        tf52.setText(board[52]);
-        tf51.setText(board[51]);
-        tf49.setText(board[49]);
-        tf48.setText(board[48]);
-        tf47.setText(board[47]);
-        tf46.setText(board[46]);
-        tf45.setText(board[45]);
-        tf44.setText(board[44]);
-        tf43.setText(board[43]);
-        tf42.setText(board[42]);
-        tf41.setText(board[41]);
-        tf39.setText(board[39]);
-        tf38.setText(board[38]);
-        tf37.setText(board[37]);
-        tf36.setText(board[36]);
-        tf35.setText(board[35]);
-        tf34.setText(board[34]);
-        tf33.setText(board[33]);
-        tf32.setText(board[32]);
-        tf31.setText(board[31]);
-        tf29.setText(board[29]);
-        tf28.setText(board[28]);
-        tf27.setText(board[27]);
-        tf26.setText(board[26]);
-        tf25.setText(board[25]);
-        tf24.setText(board[24]);
-        tf23.setText(board[23]);
-        tf22.setText(board[22]);
-        tf21.setText(board[21]);
-        tf19.setText(board[19]);
-        tf18.setText(board[18]);
-        tf17.setText(board[17]);
-        tf16.setText(board[16]);
-        tf15.setText(board[15]);
-        tf14.setText(board[14]);
-        tf13.setText(board[13]);
-        tf12.setText(board[12]);
-        tf11.setText(board[11]);
+        outputBoard();
     }
-    public void assignDefaultValues() {
+    private void outputBoard() {
+        // Clears every Cell that is not a Number 1 - 9 and prints the rest to the board
+        for (int x = 99; x >= 11; x--) {
+            if (x % 10 != 0) {
+                if (!board[x].equals("1") && !board[x].equals("2") && !board[x].equals("3") &&
+                        !board[x].equals("4") && !board[x].equals("5") && !board[x].equals("6") &&
+                        !board[x].equals("7") && !board[x].equals("8") && !board[x].equals("9")) {
+                    board[x] = "";
+                }
+                textFields[x].setText(board[x]);
+            }
+        }
+    }
+    private void clearBoard() {
+        for (int x = 99; x >= 11; x--) {
+            if (x % 10 != 0) {
+                textFields[x].clear();
+            }
+        }
+    }
+
+
+    // Output Tools
+    private void assignDefaultValues() {
+        // When beginning to solve the board this assigns every blank Cell an open possibility of any Number
         for (int x = 11; x <= 99; x++) {
             if (x % 10 != 0) {
-                if (board[x].length() != 1) {
+                if (board[x].length() == 0) {
                     board[x] = "123456789";
                 }
             }
         }
     }
-    public void clearBoard() {
-        tf11.clear();
-        tf12.clear();
-        tf13.clear();
-        tf14.clear();
-        tf15.clear();
-        tf16.clear();
-        tf17.clear();
-        tf18.clear();
-        tf19.clear();
-        tf21.clear();
-        tf22.clear();
-        tf23.clear();
-        tf24.clear();
-        tf25.clear();
-        tf26.clear();
-        tf27.clear();
-        tf28.clear();
-        tf29.clear();
-        tf31.clear();
-        tf32.clear();
-        tf33.clear();
-        tf34.clear();
-        tf35.clear();
-        tf36.clear();
-        tf37.clear();
-        tf38.clear();
-        tf39.clear();
-        tf41.clear();
-        tf42.clear();
-        tf43.clear();
-        tf44.clear();
-        tf45.clear();
-        tf46.clear();
-        tf47.clear();
-        tf48.clear();
-        tf49.clear();
-        tf51.clear();
-        tf52.clear();
-        tf53.clear();
-        tf54.clear();
-        tf55.clear();
-        tf56.clear();
-        tf57.clear();
-        tf58.clear();
-        tf59.clear();
-        tf61.clear();
-        tf62.clear();
-        tf63.clear();
-        tf64.clear();
-        tf65.clear();
-        tf66.clear();
-        tf67.clear();
-        tf68.clear();
-        tf69.clear();
-        tf71.clear();
-        tf72.clear();
-        tf73.clear();
-        tf74.clear();
-        tf75.clear();
-        tf76.clear();
-        tf77.clear();
-        tf78.clear();
-        tf79.clear();
-        tf81.clear();
-        tf82.clear();
-        tf83.clear();
-        tf84.clear();
-        tf85.clear();
-        tf86.clear();
-        tf87.clear();
-        tf88.clear();
-        tf89.clear();
-        tf91.clear();
-        tf92.clear();
-        tf93.clear();
-        tf94.clear();
-        tf95.clear();
-        tf96.clear();
-        tf97.clear();
-        tf98.clear();
-        tf99.clear();
-    }
-    public String convertRCBToText(int groupNum) {
-        if (groupNum < 0 || groupNum > 26) {
-            return "$%&^$%#$^&*()error*&*&%^%^&*&^%";
-        }
-        switch (groupNum) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                return "Row " + (groupNum + 1);
-            case 18: return "The Top Left Box";
-            case 19: return "The Top Middle Box";
-            case 20: return "The Top Right Box";
-            case 21: return "The Middle Left Box";
-            case 22: return "The Center Box";
-            case 23: return "The Middle Right Box";
-            case 24: return "The Bottom Left Box";
-            case 25: return "The Bottom Middle Box";
-            case 26: return "The Bottom Right Box";
-            default:
-            return "Column " + (groupNum - 8);
-        }
-    }
-    public void sysOutPrintBoard() {
-        //Prints out Board
-        int highest = 1;
-        for( int i = 11; i <= 99; i++ ) {
-            if (i % 10 == 0) { i++; }
-            if (board[i].length() > highest) {
-                highest = board[i].length();
-                if (highest == 9) { i = 99; }
+    private void sysOutPrintBoard() {
+        // Prints out Board
+        int longest = 1;
+        for (int i = 11; i <= 99; i++) {
+            if (i % 10 == 0) {
+                i++;
             }
-        }
-        String borderGrid = "";
-        for (int x = 1; x <= 32 + highest * 9; x++) {
-            borderGrid += "-";
-        }
-        System.out.println(borderGrid);
-        for (int b = 1; b <= 9; b++) {
-            String rowString = "|| ";
-            for (int c = 1; c <=9; c++) {
-                switch (highest - board[b * 10 + c].length()) {
-                    case 0:
-                        rowString += board[b * 10 + c]; break;
-                    case 1:
-                        rowString += board[b * 10 + c] + " "; break;
-                    case 2:
-                        rowString += " " + board[b * 10 + c] + " "; break;
-                    case 3:
-                        rowString += " " + board[b * 10 + c] + "  "; break;
-                    case 4:
-                        rowString += "  " + board[b * 10 + c] + "  "; break;
-                    case 5:
-                        rowString += "  " + board[b * 10 + c] + "   "; break;
-                    case 6:
-                        rowString += "   " + board[b * 10 + c] + "   "; break;
-                    case 7:
-                        rowString += "   " + board[b * 10 + c] + "    "; break;
-                    case 8:
-                        rowString += "    " + board[b * 10 + c] + "    "; break;
+            if (board[i].length() > longest) {
+                longest = board[i].length();
+                if (longest == 9) {
+                    i = 99;
                 }
-                if (c % 3 == 0 && c != 9) { rowString += " || "; }
-                if (c ==9) { rowString += " ||"; }
-                if (c % 3 != 0) { rowString += " | "; }
             }
+        } // Determines the longest string length of the possibilities of each cell
+
+        String borderGrid = "  ";
+        for (int x = 1; x <= 32 + longest * 9; x++) {
+            borderGrid += "-";
+        } // Assigns the top border, as well as the border after each third row, to the String borderGrid
+
+        String colNums = "     ";
+        if (longest % 2 != 0) {
+            colNums = "    ";
+        }
+        for (int x = 1; x <= 9; x++) {
+            for (int y = 1; y <= longest - 1; y++) {
+                if (x == 1) {
+                    if (y != longest - 1) {
+                        colNums += " ";
+                    }
+                    y++;
+                } else {
+                    colNums += " ";
+                }
+            }
+            colNums += "x" + x + "  ";
+            if (x % 3 == 0) {
+                colNums += " ";
+            }
+        } // Builds the Column number labels at the top of the printed board
+
+        System.out.println(colNums);
+        System.out.println(borderGrid);
+
+        for (int b = 1; b <= 9; b++) {
+            String rowString = b + "x|| ";
+            for (int c = 1; c <= 9; c++) {
+                switch (longest - board[b * 10 + c].length()) {
+                    case 0:
+                        rowString += board[b * 10 + c];
+                        break;
+                    case 1:
+                        rowString += board[b * 10 + c] + " ";
+                        break;
+                    case 2:
+                        rowString += " " + board[b * 10 + c] + " ";
+                        break;
+                    case 3:
+                        rowString += " " + board[b * 10 + c] + "  ";
+                        break;
+                    case 4:
+                        rowString += "  " + board[b * 10 + c] + "  ";
+                        break;
+                    case 5:
+                        rowString += "  " + board[b * 10 + c] + "   ";
+                        break;
+                    case 6:
+                        rowString += "   " + board[b * 10 + c] + "   ";
+                        break;
+                    case 7:
+                        rowString += "   " + board[b * 10 + c] + "    ";
+                        break;
+                    case 8:
+                        rowString += "    " + board[b * 10 + c] + "    ";
+                        break;
+                }
+                if (c % 3 == 0 && c != 9) {
+                    rowString += " || ";
+                }
+                if (c == 9) {
+                    rowString += " ||";
+                }
+                if (c % 3 != 0) {
+                    rowString += " | ";
+                }
+            }// Prints the possibilities for each row, one at a time
             System.out.println(rowString);
             if (b % 3 == 0) {
                 System.out.println(borderGrid);
-            }
+            }// Prints the borders
         }
     }
-
-    public void newSudoku(int difficulty) {
-        groupsDecs();
-
-
-        for (int x = 11; x <= 99; x++) {
-            if (x % 10 != 0) {
-                int randomNum = ThreadLocalRandom.current().nextInt(1, board[x].length() + 1);
-                if (board[x].length() > 1) {
-                    board[x] = "" + board[x].substring(randomNum - 1, randomNum);
-                }
-                for (int p = 0; p <= 19; p++) {
-
-
-                    board[Integer.parseInt(relations[x][p])] = board[Integer.parseInt(relations[x][p])].replace("" + board[x], "");
-
-
-                }
-
-                System.out.println("------------------------------" + randomNum + "-" + x + "----------------------------------------");
-                for (int b = 1; b <= 9; b++) {
-                    System.out.println("| " + board[b * 10 + 1] + " | " + board[b * 10 + 2] + " | " + board[b * 10 + 3] + " | " + board[b * 10 + 4] + " | " +
-                            board[b * 10 + 5] + " | " + board[b * 10 + 6] + " | " + board[b * 10 + 7] + " | " + board[b * 10 + 8] + " | " + board[b * 10 + 9] + " |");
-                }
-                System.out.println("--------------------------------------------------------------------------");
-
-
+    private String convertRCBToText(int groupNum) {
+        // Returns the text name of the Row/Column/Box
+        if (groupNum >= 0 && groupNum <= 26) {
+            switch (groupNum) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                    return "Row " + (groupNum + 1);
+                case 18:
+                    return "the Top Left Box";
+                case 19:
+                    return "the Top Middle Box";
+                case 20:
+                    return "the Top Right Box";
+                case 21:
+                    return "the Middle Left Box";
+                case 22:
+                    return "the Center Box";
+                case 23:
+                    return "the Middle Right Box";
+                case 24:
+                    return "the Bottom Left Box";
+                case 25:
+                    return "the Bottom Middle Box";
+                case 26:
+                    return "the Bottom Right Box";
+                default:
+                    return "Column " + (groupNum - 8);
             }
         }
-
-
-        outputBoard();
-
-        //System.out.println(board[Integer.parseInt(groups[5][8])]);
+        return "missing data";
+    }
+    private String addCommasAndAnd(String cellNums) {
+        // ex. in> "45|46|"           out> "45 and 46"
+        // ex. in> "32|35|36|38|39|"  out> "32, 35, 36, 38, and 39"
+        cellNums = cellNums.substring(0, cellNums.length() - 1);
+        if (cellNums.substring(1, 2).equalsIgnoreCase("|")) {
+            if (cellNums.length() > 3) { // Handles 3 or more numbers text to proper english
+                cellNums = cellNums.replace("|", ", ");
+                cellNums = cellNums.substring(0, cellNums.length() - 1) + "and " +
+                        cellNums.substring(cellNums.length() - 1, cellNums.length());
+            }
+            if (cellNums.length() == 3) { // Handles 2 numbers text to proper english
+                cellNums = cellNums.replace("|", " and ");
+            }
+        } else {
+            if (cellNums.length() > 5) { // Handles 3 or more cells text to proper english
+                cellNums = cellNums.replace("|", ", ");
+                cellNums = "s " + cellNums.substring(0, cellNums.length() - 2) + "and " +
+                        cellNums.substring(cellNums.length() - 2, cellNums.length());
+            }
+            if (cellNums.length() == 5) { // Handles 2 cells text to proper english
+                cellNums = "s " + cellNums.replace("|", " and ");
+            }
+            if (cellNums.length() == 2) {
+                cellNums = " " + cellNums;
+            }
+        }
+        return cellNums;
+    }
+    private static void infoBox(String infoMessage, String titleBar) {
+        // Alert infoBox
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, infoMessage);
+        alert.setTitle(titleBar);
+        alert.setHeaderText(null);
+        alert.showAndWait();
     }
 
-    public int clearRelations(int cellNumber) {
-        // If a cell only has one possibility then mark that as the solution to that cell
-        // and remove that number as a possibility from all related cells (same R/C/B)
-        if ((board[cellNumber].length() == 1) && (relations[cellNumber][20] != "Cleared")) {
-            for (int p = 0; p <= 19; p++) {
-                board[Integer.parseInt(relations[cellNumber][p])] = board[Integer.parseInt(relations[cellNumber][p])].replace("" + board[cellNumber], "");
-            }
+
+    // Variable Controllers
+    private String getBG(int rcbNum, int location) {
+        return board[getCellInt(rcbNum, location)];
+    }
+    private void setBG(int rcbNum, int location, String value) {
+        board[Integer.parseInt(groups[rcbNum][location])] = value;
+    }
+    private String getRelations(int cellNumber, int location) {
+        return board[Integer.parseInt(relations[cellNumber][location])];
+    }
+    private void setRelations(int cellNumber, int location, String value) {
+        board[Integer.parseInt(relations[cellNumber][location])] = value;
+    }
+    private int getCellInt(int rcbNum, int location) {
+        return Integer.parseInt(groups[rcbNum][location]);
+    }
+    private int whichBox(int rcNum, int location) {
+        // Input a Row/Column number and the Location in the Row/Column
+        // Output the Box number
+        if (rcNum < 9) {
+            return location / 3 + 18 + (rcNum / 3) * 3;
+        }
+        if (rcNum > 8) {
+            return 3 * (location / 3) + 18 + (rcNum / 3) % 3;
+        }
+        return -1;
+    }
+    private int whichRC(int cell1, int cell2) {
+        // Input 2 cell numbers
+        // Output the Row or Column they are in
+        if (cell1 / 10 == cell2 / 10) {
+            return cell1 / 10 - 1;
+        }
+        if (cell1 % 10 == cell2 % 10) {
+            return cell1 % 10 - 1 + 9;
+        }
+        return -1;
+    }
+    private int whichRC(int boxNum, int location1, int location2) {
+        // Input the Box and 2 Locations (0 thur 8) in the Box
+        // Output the Row or Column they are in
+        return whichRC(getCellInt(boxNum, location1), getCellInt(boxNum, location2));
+    }
+
+
+    // Solve Method Tools
+    private int clearRelations(int cellNumber) {
+        // If a Cell only has one possibility then mark that as the solution to that Cell
+        // and remove that Number as a possibility from the related Row, Column, and Box
+        if ((board[cellNumber].length() == 1) && !(relations[cellNumber][20].equalsIgnoreCase("Cleared"))) {
+            for (int location = 0; location <= 19; location++) {
+                setRelations(cellNumber, location,
+                        getRelations(cellNumber, location).replace("" + board[cellNumber], ""));
+                // Removes the solved Number as a possibility from the related Cell
+
+                if (getRelations(cellNumber, location).length() == 0) {
+                    setRelations(cellNumber, location, "error");
+                    System.out.println("Error in entered puzzle.  Unsolvable puzzle.");
+                    infoBox("Error in entered puzzle.  \nRemoved the last possible number from cell " +
+                            relations[cellNumber][location] + ".", "Unsolvable puzzle");
+                    clearedCount = 80;
+                } // Catches if the entered puzzle has an error that makes it unsolvable
+            } // Remove the Number as a possibility from the related Row, Column, and Box
+
             relations[cellNumber][20] = "Cleared";
+            clearedCount += 1;
+
+            if (clearedCount != 81) {
+                System.out.println("Cell " + cellNumber + " is " + board[cellNumber] + ", so remove " +
+                        board[cellNumber] + " as a possibility from all related Rows Columns and Boxes.");
+            } else {
+                System.out.println("Cell " + cellNumber + " is " + board[cellNumber] + ", and that completes the puzzle.");
+            } // If the puzzle isn't solved then print the removal plan, if it is than print the final number
             return 1;
         }
         return 0;
     }
-    public boolean clearRelations() {
-        // Check if every cell has had their immediate possibilities narrowed
-        boolean bChanges = false;
+    private boolean[] findNumberInRCB(int number, int rcbNum) {
+        // Finds all the Cells within a Row/Column/Box that contain a Number
+        boolean[] cells = new boolean[9];
+        for (int location = 0; location <= 8; location++) {
+            if (getBG(rcbNum, location).contains("" + number)) {
+                cells[location] = true;
+            } else {
+                cells[location] = false;
+            }
+        }
+        return cells;
+    }
+    private Integer[] boxSubgroups(boolean cells[], int boxNum) {
+        // Find all the instances in a Box of at least 2 Cells
+        // in the same Row/Column that contain the Number
+        Integer[] rcNum = new Integer[6];
+        for (int subGroup = 0; subGroup <= 5; subGroup++) {
+            int[] subCell = new int[3];
+            switch (subGroup / 3) {
+                case 0:
+                    for (int y = 0; y <= 2; y++) {
+                        if (cells[3 * subGroup + y]) {
+                            subCell[y] = 1;
+                        }
+                    }
+                    if (subCell[0] + subCell[1] + subCell[2] >= 2) {
+                        rcNum[subGroup] = whichRC(boxNum, 3 * subGroup, 3 * subGroup + 1);
+                    }
+                    break;
+                case 1:
+                    for (int y = 0; y <= 2; y++) {
+                        if (cells[subGroup % 3 + 3 * y]) {
+                            subCell[y] = 1;
+                        }
+                    }
+                    if (subCell[0] + subCell[1] + subCell[2] >= 2) {
+                        rcNum[subGroup] = whichRC(boxNum, subGroup % 3, subGroup % 3 + 3);
+                    }
+                    break;
+            }
+        }
+        return rcNum;
+    }
+    private boolean significantOverlap(Integer[] rcNum, int number, int boxNum, boolean[] boxCells) {
+        // If a subgroup of Cells must contain a Number then remove the Number
+        // from the possibilities of the rest of the Row/Column or Box
+        boolean changes = false;
+        Integer[] trials = new Integer[2];
+        Boolean[] tests = new Boolean[2];
+        boolean[] rcCells;
+        for (int x = 0; x <= 5; x++) {
+            if (rcNum[x] != null) {
+
+                rcCells = findNumberInRCB(number, rcNum[x]);
+                // Find all the Cells within the Row/Column that contain the Number
+
+                Integer[] overlappingCells = rcbOverlap(rcNum[x], boxNum);
+                // Find the Cells that overlap between the Row/Column and the Box
+
+                for (int z = 0; z <= 1; z++) {
+                    boolean onlyInstance = true;
+
+                    for (int y = 0; y <= 8; y++) {
+                        if (z == 0) {
+                            trials[z] = rcNum[x];
+                        } else {
+                            trials[z] = boxNum;
+                        }
+                        if (z == 0) {
+                            tests[z] = rcCells[y];
+                        } else {
+                            tests[z] = boxCells[y];
+                        }
+                        if (tests[z] && getCellInt(trials[z], y) != overlappingCells[0] &&
+                                getCellInt(trials[z], y) != overlappingCells[1] &&
+                                getCellInt(trials[z], y) != overlappingCells[2]) {
+                            onlyInstance = false;
+                            y = 8;
+                        }
+                    }// Check if the overlapping Cells are the only instances
+                    // of that number in either the Row/Column or in the Box
+
+                    if (onlyInstance) {
+                        String cellNums = "";
+                        z = Math.abs(z - 1); // Flips z(0/1) to check the Box or Row/Column instead
+                        for (int y = 0; y <= 8; y++) {
+                            if (z == 0) {
+                                trials[z] = rcNum[x];
+                            } else {
+                                trials[z] = boxNum;
+                            }
+                            if (z == 0) {
+                                tests[z] = rcCells[y];
+                            } else {
+                                tests[z] = boxCells[y];
+                            }
+                            if (tests[z] && getCellInt(trials[z], y) != overlappingCells[0] &&
+                                    getCellInt(trials[z], y) != overlappingCells[1] &&
+                                    getCellInt(trials[z], y) != overlappingCells[2]) {
+                                if (cellNums.equalsIgnoreCase("")) {
+                                    sysOutPrintBoard();
+                                }
+                                cellNums += groups[trials[z]][y] + "|";
+                                setBG(trials[z], y, getBG(trials[z], y).replace("" + number, ""));
+                                if (getBG(trials[z], y).length() == 1) {
+                                    clearRelations(getCellInt(trials[z], y));
+                                } // If it solves a Cell in the process then clear the relations
+                            }
+                        }
+                        z = Math.abs(z - 1); // Flips z(1/0) back so we can try it again the other way
+                        if (!cellNums.equalsIgnoreCase("")) {
+                            changes = true;
+                            System.out.println("In " + convertRCBToText(trials[z]) + ", the number " +
+                                    number + " must be in " + convertRCBToText(trials[Math.abs(z - 1)]) +
+                                    ", so remove " + number + " as a possibility from cell" +
+                                    addCommasAndAnd(cellNums) + ".");
+                        }
+                    }// If the overlapping Cells are the only instances then remove that Number
+                    // from the possibilities from the rest of either the Box or Row/Column
+                }
+            }
+        }
+        return changes;
+    }
+    private Integer[] rcbOverlap(int rcNum, int boxNum) {
+        // Finds the Cells that overlap between a Row/Column and a Box
+        Integer[] cells = new Integer[3];
+        for (int p = 0; p <= 8; p++) {
+            for (int q = 0; q <= 8; q++) {
+                if (groups[rcNum][p].equalsIgnoreCase(groups[boxNum][q])) {
+                    cells[0] = getCellInt(rcNum, p);
+                    cells[1] = getCellInt(rcNum, p + 1);
+                    cells[2] = getCellInt(rcNum, p + 2);
+                    return cells;
+                }
+            }
+        }
+        return cells;
+    }
+    private int[] findSingleSubset(boolean[][] cells) {
+        // Finds a subset in the Row/Column/Box if there is one
+        int[] returns = new int[10];
+        int cap = 1_000_000_000;
+
+        int[] cell = new int[10];
+        int[] howMany = new int[10];
+        for (int number = 1; number <= 9; number++) {
+            cell[number] = 1;
+            howMany[number] = 0;
+            for (int location = 0; location <= 8; location++) {
+                cell[number] *= 10;
+                if (cells[number][location]) {
+                    cell[number] += 1;
+                    howMany[number] += 1;
+                }
+            }
+            cell[number] -= cap;
+        } // Converts boolean cells[number][location] to int cell[number] = 010_101_011
+        // to add later easier and also counts how many possibilities for each number
+
+        String comp;
+        int setSize;
+        for (int x = 12; x <= 6789; x++) {
+            if (x == 90) {
+                x = 123;
+            }
+            if (x == 790) {
+                x = 1234;
+            }
+            // Skips unnecessary combinations to search through
+
+            setSize = 4;
+            if (x < 790) {
+                setSize = 3;
+            }
+            if (x < 90) {
+                setSize = 2;
+            }
+            // Determines setSize
+
+            boolean check = false;
+            switch (setSize) {
+                case 2:
+                    returns[1] = x / 10;
+                    returns[2] = x % 10;
+                    if (returns[1] < returns[2]) {
+                        check = true;
+                    }
+                    break;
+                case 3:
+                    returns[1] = x / 100;
+                    returns[2] = (x / 10) % 10;
+                    returns[3] = x % 10;
+                    if (returns[1] < returns[2] && returns[2] < returns[3]) {
+                        check = true;
+                    }
+                    break;
+                case 4:
+                    returns[1] = x / 1000;
+                    returns[2] = (x / 100) % 10;
+                    returns[3] = (x / 10) % 10;
+                    returns[4] = x % 10;
+                    if (returns[1] < returns[2] && returns[2] < returns[3] && returns[3] < returns[4]) {
+                        check = true;
+                    }
+                    break;
+            } // Isolates the Numbers to search through into their own variables
+            // and further skips unnecessary combinations to search through
+
+            for (int y = 1; y <= setSize; y++) {
+                if (howMany[returns[y]] == 1 || howMany[returns[y]] > setSize) {
+                    check = false;
+                }
+            } // Verifies the Cell is not solved already and that the Number
+            // has the right amount of possible locations in the group
+
+            if (check) {
+                returns[0] = setSize;
+                returns[9] = cap + cell[returns[1]] + cell[returns[2]] + cell[returns[3]] + cell[returns[4]];
+                comp = "" + returns[9];
+                comp = comp.replace("0", "");
+                if (comp.length() - 1 == setSize) {
+                    return returns;
+                }
+            } // If all the above criteria is meet then check if the Numbers form a subset
+        }
+        for (int x = 0; x <= 9; x++) {
+            returns[x] = 0;
+        } // Returns 0 for everything if a subset is not found
+        return returns;
+    }
+    private boolean evaluateSingleSubset(int[] subset, boolean[][] cells, int rcbNum) {
+        boolean changes = false;
+
+        String sReplace = "123456789";
+        sReplace = sReplace.replace("" + subset[1], "");
+        sReplace = sReplace.replace("" + subset[2], "");
+        sReplace = sReplace.replace("" + subset[3], "");
+        sReplace = sReplace.replace("" + subset[4], "");
+        sReplace = sReplace.replace("" + subset[5], "");
+        // Creates a string of the Numbers not in the subset
+
+        String cellNums = "";
+        for (int x = 0; x <= 8; x++) {
+            if (cells[(int) subset[1]][x] || cells[(int) subset[2]][x] || cells[(int) subset[3]][x] ||
+                    cells[(int) subset[4]][x] || cells[(int) subset[5]][x]) {
+                // If this is a Cell in the subset
+
+                for (int y = 0; y < sReplace.length(); y++) {
+                    if (getBG(rcbNum, x).contains(sReplace.substring(y, y + 1))) {
+                        // If the Cell contains a Number not in the subset
+
+                        if (cellNums.equalsIgnoreCase("")) {
+                            sysOutPrintBoard();
+                            String locations = "" + subset[9];
+                            for (int z = 1; z <= 9; z++) {
+                                if (!locations.substring(z, z + 1).equalsIgnoreCase("0")) {
+                                    cellNums += groups[rcbNum][z - 1] + "|";
+                                } // Mark the locations of the Cells in the subset
+                            }
+                        }
+                        setBG(rcbNum, x, getBG(rcbNum, x).replace(sReplace.substring(y, y + 1), ""));
+                        // Remove the Number
+                        changes = true;
+                    }
+                }
+            }
+        }
+        if (!cellNums.equalsIgnoreCase("")) {
+            String subNums = subset[1] + "|" + subset[2] + "|";
+            if (subset[3] != 0) {
+                subNums += subset[3] + "|";
+            }
+            if (subset[4] != 0) {
+                subNums += subset[4] + "|";
+            }
+            if (subset[5] != 0) {
+                subNums += subset[5] + "|";
+            }
+            System.out.println("In " + convertRCBToText(rcbNum) + ", the numbers " + addCommasAndAnd(subNums) +
+                    " form a subset, so clear the rest of cell" + addCommasAndAnd(cellNums) + ".");
+            cellNums = "";
+        }
+        return changes;
+    }
+
+
+    // Solve Method Schemes
+    private void solveBoard() {
+        // Solves the puzzle, if solvable
+        if (clearedCount != 81) {
+            groupsDecs();
+            inputBoard();
+            assignDefaultValues();
+            clearRelations();
+            if (clearedCount != 81) {
+                sysOutPrintBoard();
+            }
+        }
+
+
+        boolean test1 = false;
+        boolean test2 = false;
+        do {
+
+            onlyInGroup();
+            clearRelations();
+            test1 = rcbInteraction();
+            test2 = singleGroupSubset();
+
+
+        } while (test1 || test2);
+
+
+        clearedCount = 0;
+        sysOutPrintBoard();
+        outputBoard();
+
+    }
+    private void clearRelations() {
+        // Check if every solved Cell has had their relations cleared
         int iChanges;
         do {
             iChanges = 0;
@@ -665,144 +822,181 @@ public class Main extends Application {
                 if (x % 10 != 0) {
                     iChanges += clearRelations(x);
                 }
-            }
-            if (iChanges > 0) {
-                bChanges = true;
-            }
+            } // Clear the relations for every cell
         } while (iChanges > 0);
-        return bChanges;
     }
-    public void singleGroup() {
-        // If a number can only be in one cell in a R/C/B then assign that number to that cell
+    private void onlyInGroup() {
+        // If a Number can only be in one Cell in a Row/Column/Box then assign that Number to that Cell
         boolean changes;
+        clearRelations();
         do {
             changes = false;
-            for (int p = 0; p <= 26; p++) {
-                for (int q = 0; q <= 8; q++) {
-                    for (int r = 1; r <= 9; r++) {
-                        if (board[Integer.parseInt(groups[p][q])].contains("" + r) && board[Integer.parseInt(groups[p][q])].length() != 1) {
-                            boolean onlyInstance = true;
-                            for (int x = 0; x <= 8; x++) {
-                                if (x != q) {
-                                    if (board[Integer.parseInt(groups[p][x])].contains("" + r)) {
-                                        onlyInstance = false;
-                                        x = 8;
-                                    }
-                                }
-                            }
-                            if (onlyInstance) {
-                                board[Integer.parseInt(groups[p][q])] = "" + r;
-                                clearRelations(Integer.parseInt(groups[p][q]));
-                                changes = true;
-                            }
+            for (int number = 1; number <= 9; number++) {
+                for (int rcbNum = 0; rcbNum <= 26; rcbNum++) {
+                    boolean[] cells = findNumberInRCB(number, rcbNum);
+                    // Finds all the Cells that contain the Number in the Row/Column/Box
+
+                    int[] instances = new int[2];
+                    for (int location = 0; location <= 8; location++) {
+                        if (cells[location]) {
+                            instances[0] = location;
+                            instances[1] += 1;
                         }
-                    }
+                    } // Checks how many Cells can contain the Number in the Row/Column/Box
+
+                    if (instances[1] == 1 && getBG(rcbNum, instances[0]).length() > 1) {
+                        setBG(rcbNum, instances[0], "" + number);
+                        System.out.println("Cell " + getCellInt(rcbNum, instances[0]) + " is the only cell in " +
+                                convertRCBToText(rcbNum) + " that can be " + number + ".  So cell " +
+                                getCellInt(rcbNum, instances[0]) + " is " + number + ".");
+                        clearRelations(getCellInt(rcbNum, instances[0]));
+                        changes = true;
+                    } // If the Number can only be in one Cell and the Cell is not solved already then assign it
                 }
             }
         } while (changes);
     }
-    public boolean brcInteraction() {
-        // If a number can only exist in a certain row or column, inside a box, then
-        // remove that number as a possibility from the rest of the row or column
+    private boolean rcbInteraction() {
+        // If there are 2/3 Cells, in a Row/Column within the same Box, that a Number must be in because of the
+        // Row/Column or the Box then remove that Number as a possibility from either the Box or Row/Column
+        clearRelations();
         boolean changes = false;
-        for (int r = 1; r <= 9; r++) {
-            for (int c = 11; c <= 99; c++) {
-                if (c % 10 != 0) {
-                    if (board[c].contains("" + r) && board[c].length() > 1) {
-                        for (int p = 0; p <= 17; p++) {
-                            for (int q = 0; q <= 8; q++) {
-                                if (groups[p][q].contains("" + c)) {
-                                    for (int s = 18; s <= 26; s++) {
-                                        for (int t = 0; t <= 8; t++) {
-                                            if (groups[s][t] == groups[p][q]) {
-                                                boolean rcOnly = true;
-                                                for (int u = 0; u <= 8; u++) {
-                                                    if (board[Integer.parseInt(groups[s][u])].contains("" + r)) {
-                                                        if (p < 9 && t / 3 != u / 3) {
-                                                            rcOnly = false;
-                                                            u = 8;
-                                                        } else if (p > 8 && t % 3 != u % 3) {
-                                                            rcOnly = false;
-                                                            u = 8;
-                                                        }
-                                                    }
-                                                }
-                                                if (rcOnly) {
-                                                    String callEm = "";
-                                                    for (int w = 0; w <= 8; w++) {
-                                                        if ((q / 3 != w / 3) && board[Integer.parseInt(groups[p][w])].contains("" + r)) {
-                                                            callEm += groups[p][w] + ", ";
-                                                            board[Integer.parseInt(groups[p][w])] = board[Integer.parseInt(groups[p][w])].replace("" + r, "");
-                                                            changes = true;
-                                                        }
-                                                    }
-                                                    if (callEm.length() > 4) {
-                                                        callEm = callEm.substring(0, callEm.length() - 2);
-                                                        System.out.println("In " + convertRCBToText(s) + " the number " + r + " can only be in " + convertRCBToText(p) + ", so remove " + r + " as a possibility from cells " + callEm);
-                                                    } else if (callEm.length() > 1){
-                                                        callEm = callEm.substring(0, callEm.length() - 2);
-                                                        System.out.println("In " + convertRCBToText(s) + " the number " + r + " can only be in " + convertRCBToText(p) + ", so remove " + r + " as a possibility from cell " + callEm);
-                                                    }
-                                                }
-                                                s = 26;
-                                                t = 8;
-                                            }
-                                        }
-                                    }
-                                    if (p <= 8) { p = 8; } else { p = 17; }
-                                    q = 8;
-                                }
-                            }
-                        }
-                    }
+        for (int number = 1; number <= 9; number++) {
+            for (int boxNum = 18; boxNum <= 26; boxNum++) {
+
+                boolean[] boxCells = findNumberInRCB(number, boxNum);
+                // Find all the Cells within the Box that contain the Number
+
+                Integer[] rcNum = boxSubgroups(boxCells, boxNum);
+                // Find all the instances in the Box of at least 2 Cells
+                // in the same Row/Column that contain the Number
+
+                boolean subChanges = significantOverlap(rcNum, number, boxNum, boxCells);
+                // If the subgroup of Cells must contain the Number then remove the Number
+                // from the possibilities of either the rest of the Row/Column or the Box
+
+                if (subChanges) {
+                    changes = true;
                 }
             }
         }
         return changes;
     }
+    private boolean singleGroupSubset() {
+        // If, in a Row/Column/Box, a group of possible Numbers form a subset then
+        // remove the possible Numbers in those Cells that aren't in the subset
+        clearRelations();
+        boolean changes = false;
+        boolean[][] cells = new boolean[10][];
+        for (int rcbNum = 0; rcbNum <= 26; rcbNum++) {
+            for (int number = 0; number <= 9; number++) {
+                cells[number] = findNumberInRCB(number, rcbNum);
+            } // Find all the Cells within the Row/Column/Box that contain each Number
+
+            int[] subset = findSingleSubset(cells);
+            // Finds a subset in the Row/Column/Box if there is one
+
+            if (subset[0] != 0) {
+                changes = evaluateSingleSubset(subset, cells, rcbNum);
+            }
+            // If the Cells in the subset contain Numbers not in the subset then remove those Numbers
+        }
+        return changes;
+    }
 
 
-    public void solveBoard() {
+    public void newSudoku(int difficulty) {
         groupsDecs();
         inputBoard();
         assignDefaultValues();
+        clearedCount = 0;
 
 
+        // Put nine 1s.
+        // Loop
+        // Put nine 2s.
+        // Put nine 3s.
+        // .
+        // .
+        // .
+        // If at any point it won't work delete all the numbers you were currently on and try again
+        // If
 
 
+        // try 2
+// do {
+//            int randomNum = ThreadLocalRandom.current().nextInt(11, 100);
+//            if (randomNum % 10 != 0 && board[randomNum].length() != 1) {
+//                if (board[randomNum].length() > 1) {
+//                    int randomSubNum = ThreadLocalRandom.current().nextInt(1, board[randomNum].length() + 1);
+//                    board[randomNum] = "" + board[randomNum].substring(randomSubNum - 1, randomSubNum);
+//                }
+//
+//
+//                boolean test2 = false;
+//                do  {
+//                    clearRelations();
+//                    onlyInGroup();
+//                    test2 = brcInteraction();
+//                } while (test2);
+//                sysOutPrintBoard();
+//
+//
+//
+//                int test1;
+//                newSudoku = true;
+//                test1 = clearRelations(randomNum);
+//                if (test1 > 0 && test1 % 10 == 0) {
+//
+//                    sysOutPrintBoard();
+//
+//                    for (int x = 11; x <= 99; x ++) {
+//                        if (x % 10 == 0) { x++; }
+//                        if (board[x].length() == 1 && Integer.parseInt(board[x]) == test1 / 10) {
+//                            board[x] = "123456789";
+//                        } else if (board[x].length() != 1) {
+//                            board[x] = "123456789";
+//                        }
+//                    }
+//
+//                    clearedCount = 0;
+//                    sysOutPrintBoard();
+//                    clearRelations();
+//
+//                }
+//
+//                test2 = false;
+//                do  {
+//                    clearRelations();
+//                    onlyInGroup();
+//                    test2 = brcInteraction();
+//                } while (test2);
+//                sysOutPrintBoard();
+//            }
+//        } while (clearedCount != 81);
 
-        boolean test1 = false;
-        boolean test2 = false;
-        do {
-            sysOutPrintBoard();
 
-
-
-            test1 = clearRelations();
-            singleGroup();
-            test2 = brcInteraction();
-
-
-
-
-        } while (test1 || test2);
-
-
-
-
-
-
-
-
-
-
-        sysOutPrintBoard();
-
+        //try 1
+//
+//        for (int x = 11; x <= 99; x++) {
+//            if (x % 10 != 0) {
+//
+//
+//
+//                System.out.println("------------------------------" + randomNum + "-" + x + "----------------------------------------");
+//                for (int b = 1; b <= 9; b++) {
+//                    System.out.println("| " + board[b * 10 + 1] + " | " + board[b * 10 + 2] + " | " + board[b * 10 + 3] + " | " + board[b * 10 + 4] + " | " +
+//                            board[b * 10 + 5] + " | " + board[b * 10 + 6] + " | " + board[b * 10 + 7] + " | " + board[b * 10 + 8] + " | " + board[b * 10 + 9] + " |");
+//                }
+//                System.out.println("--------------------------------------------------------------------------");
+//
+//
+//            }
+//        }
 
 
         outputBoard();
     }
-
 
 
     public void step3() {
@@ -813,17 +1007,27 @@ public class Main extends Application {
         //  IntF  13.4..2.........6.7...621....3......59...1..8...6...94.....7..3.1..95....2...6...
         //  Hard  .......28..7.8.5..9...7.4..4...68......1.....5.32....4......2...25...18....5.6.9.
 
+
+        //add up/down/left/right key press to move you around the board functionality
+        //add functionality that moves you to the next cell after one char is typed
+        //show candidate numbers in cell
+
+
+
         inputBoard();
         sysOutPrintBoard();
         String boardString = "";
         for (int x = 11; x <= 99; x++) {
             if (x % 10 != 0) {
-                if (board[x].length() > 0) { boardString += board[x]; } else { boardString += "."; }
+                if (board[x].length() > 0) {
+                    boardString += board[x];
+                } else {
+                    boardString += ".";
+                }
             }
         }
         System.out.println(boardString);
 
     }
-
 
 }
