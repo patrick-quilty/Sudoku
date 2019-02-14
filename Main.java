@@ -39,7 +39,6 @@ public class Main extends Application {
     private String[][] groups = new String[27][]; // The numbered Rows, Columns, and Boxes of the board
     private String[][] relations = new String[100][]; // Contains all the Related Cells for each Cell
     private String[] tempBoard = new String[100]; // Used when making new puzzles
-    private int[] newBlocks = new int[100]; // Used when making new puzzles to find multiple solution errors quicker
     private int clearedCount = 0; // Number of Cells that are solved and have had their Relations cleared
     private int[] combo = new int[246]; // Every 2-4 digit combination of the numbers 1-9
     private boolean guess = false; // Used to determine if the program is using guess and check
@@ -426,7 +425,7 @@ public class Main extends Application {
     // Buttons
     private void onButtonClicked(ActionEvent buttonClicked) {
         if (buttonClicked.getSource() == button[0]) { inputBoard(); }
-        if (buttonClicked.getSource() == button[1]) { clearBoard(); }
+        if (buttonClicked.getSource() == button[1]) { testy(); }
         if (buttonClicked.getSource() == button[2]) { solveBoard(); }
         if (buttonClicked.getSource() == button[3]) { newPuzzleForm(); }
     }
@@ -695,7 +694,7 @@ public class Main extends Application {
                 if (getRelations(cellNumber, location).length() == 0) {
                     if (!guess && !createNew) {
                         setRelations(cellNumber, location, "error");
-                        infoBox("Error in entered puzzle.  \nRemoved the last possible number from cell " +
+                        infoBox("Error in entered puzzle.  \nRemoved the last possible Number from Cell " +
                                 relations[cellNumber][location] + ".", "Unsolvable puzzle");
                     }
                     System.out.println("Error in entered puzzle.  Unsolvable puzzle.");
@@ -715,9 +714,9 @@ public class Main extends Application {
                         ", and that completes the puzzle.");
             } else if(clearedCount != 82){
                 System.out.println("Cell " + cellNumber + " is " + board[cellNumber] + ", so remove " +
-                        board[cellNumber] + " as a possibility from all related Rows Columns and Boxes.");
+                        board[cellNumber] + " as a possibility from all related Rows, Columns, and Boxes.");
                 textArea1.appendText("\nCell " + cellNumber + " is " + board[cellNumber] + ", so remove " +
-                        board[cellNumber] + " as a possibility from all related Rows Columns and Boxes.");
+                        board[cellNumber] + " as a possibility from all related Rows, Columns, and Boxes.");
             }// If the puzzle isn't solved then print the removal plan, if it is than print the final number
             return 1;
         }
@@ -887,13 +886,13 @@ public class Main extends Application {
 
                         if (!cellNums.equalsIgnoreCase("")) {
                             changes = true;
-                            System.out.println("In " + convertRCBToText(trials[z]) + ", the number " +
+                            System.out.println("In " + convertRCBToText(trials[z]) + ", the Number " +
                                     number + " must be in " + convertRCBToText(trials[Math.abs(z - 1)]) +
-                                    ", so remove " + number + " as a possibility from cell" +
+                                    ", so remove " + number + " as a possibility from Cell" +
                                     addCommasAndAnd(cellNums) + ".");
-                            textArea1.appendText("\nIn " + convertRCBToText(trials[z]) + ", the number " +
+                            textArea1.appendText("\nIn " + convertRCBToText(trials[z]) + ", the Number " +
                                     number + " must be in " + convertRCBToText(trials[Math.abs(z - 1)]) +
-                                    ", so remove " + number + " as a possibility from cell" +
+                                    ", so remove " + number + " as a possibility from Cell" +
                                     addCommasAndAnd(cellNums) + ".");
 
                             // Prints the removed Numbers
@@ -996,10 +995,10 @@ public class Main extends Application {
             String subNums = subset[1] + "|" + subset[2] + "|";
             if (subset[3] != 0) { subNums += subset[3] + "|"; }
             if (subset[4] != 0) { subNums += subset[4] + "|"; }
-            System.out.println("In " + convertRCBToText(rcbNum) + ", the numbers " + addCommasAndAnd(subNums) +
-                    " form a subset, so clear the rest of cell" + addCommasAndAnd(cellNums) + ".");
+            System.out.println("In " + convertRCBToText(rcbNum) + ", the Numbers " + addCommasAndAnd(subNums) +
+                    " form a Subset, so clear the rest of Cell" + addCommasAndAnd(cellNums) + ".");
             textArea1.appendText("\nIn " + convertRCBToText(rcbNum) + ", the numbers " + addCommasAndAnd(subNums) +
-                    " form a subset, so clear the rest of cell" + addCommasAndAnd(cellNums) + ".");
+                    " form a Subset, so clear the rest of Cell" + addCommasAndAnd(cellNums) + ".");
             // Prints the removed Numbers
 
             clearRelations();
@@ -1047,24 +1046,6 @@ public class Main extends Application {
         compare = "" + rcNumLocations[0];
         compare = compare.replace("0", "");
         // Determines how many different Columns/Rows the Number is in of the Row/Columns being checked
-
-        if (createNew && compare.length() == chainSize && check && clearedCount > 70 &&
-                chainSize == 9 - howManyOfANumberAreSolved(number)) {
-            for (int x = 11; x <= 99; x++) {
-                if (x % 10 == 0) { x++; }
-                if (board[x].contains("" + number) && board[x]. length() > 1) {
-                    sysOutPrintBoard();
-                    board[x] = "" + number;
-                    newBlocks[x] = number;
-                    System.out.println("To prevent multiple solutions, set Cell " + x + " as " + board[x] + ".");
-                    textArea1.appendText("\nTo prevent multiple solutions, set Cell " + x + " as " + board[x] + ".");
-                    clearRelations(x);
-                    x = 99;
-                }
-            }
-        } // Helps make new puzzles quicker by catching multiple solutions earlier on
-
-
 
         if (compare.length() == chainSize && check && chainSize != 9 - howManyOfANumberAreSolved(number)) {
             // If the Number of possible locations matches the chain size and
@@ -1118,13 +1099,13 @@ public class Main extends Application {
                 rcTag = addCommasAndAnd(rcTag);
                 switchTag = addCommasAndAnd(switchTag);
                 System.out.println("In " + (rowsOrColumns == 0 ? "Rows " : "Columns ") + rcTag +
-                        ", the number " + number + " forms a chain in " +
+                        ", the Number " + number + " forms a Chain in " +
                         (rowsOrColumns == 1 ? "Rows " : "Columns ") + switchTag + ", so remove " +
-                        number + " as a possibility from cell" + addCommasAndAnd(resultCells) + ".");
+                        number + " as a possibility from Cell" + addCommasAndAnd(resultCells) + ".");
                 textArea1.appendText("\nIn " + (rowsOrColumns == 0 ? "Rows " : "Columns ") + rcTag +
-                        ", the number " + number + " forms a chain in " +
+                        ", the Number " + number + " forms a Chain in " +
                         (rowsOrColumns == 1 ? "Rows " : "Columns ") + switchTag + ", so remove " +
-                        number + " as a possibility from cell" + addCommasAndAnd(resultCells) + ".");
+                        number + " as a possibility from Cell" + addCommasAndAnd(resultCells) + ".");
                 // Prints the removed Numbers
 
                 results = true;
@@ -1230,11 +1211,11 @@ public class Main extends Application {
 
                     if (instances[1] == 1 && getBG(rcbNum, instances[0]).length() > 1) {
                         setBG(rcbNum, instances[0], "" + number);
-                        System.out.println("Cell " + getCellInt(rcbNum, instances[0]) + " is the only cell in " +
-                                convertRCBToText(rcbNum) + " that can be " + number + ".  So cell " +
+                        System.out.println("Cell " + getCellInt(rcbNum, instances[0]) + " is the only Cell in " +
+                                convertRCBToText(rcbNum) + " that can be " + number + ".  So Cell " +
                                 getCellInt(rcbNum, instances[0]) + " is " + number + ".");
-                        textArea1.appendText("\nCell " + getCellInt(rcbNum, instances[0]) + " is the only cell in " +
-                                convertRCBToText(rcbNum) + " that can be " + number + ".  So cell " +
+                        textArea1.appendText("\nCell " + getCellInt(rcbNum, instances[0]) + " is the only Cell in " +
+                                convertRCBToText(rcbNum) + " that can be " + number + ".  So Cell " +
                                 getCellInt(rcbNum, instances[0]) + " is " + number + ".");
                         // Prints the removed Numbers
 
@@ -1316,6 +1297,10 @@ public class Main extends Application {
         return changes;
     }
     private void guess() {
+        if (!guess && !createNew) {
+            System.out.println("\n\nBegin Trial and Error.\n\n\n");
+            textArea1.appendText("\n\n\nBegin Trial and Error.\n\n");
+        }
         guess = true;
         String[] guessBoard = new String[100];
         String[] guessRelations = new String[100];
@@ -1324,24 +1309,18 @@ public class Main extends Application {
             int guessClearedCount = clearedCount;
 
             for (int x = 11; x <= 99; x++) {
-                if (x % 10 == 0) {
-                    x++;
-                }
+                if (x % 10 == 0) { x++; }
                 guessBoard[x] = board[x];
                 guessRelations[x] = relations[x][20];
             } // Transfer current Board and Relations to guessBoard and guessRelations for storage
 
             for (int x = 11; x <= 99; x++) {
-                if (x % 10 == 0) {
-                    x++;
-                }
+                if (x % 10 == 0) { x++; }
                 if (board[x].length() == 2 && clearedCount != 81) {
                     sysOutPrintBoard();
                     board[x] = board[x].substring(0, 1);
-                    System.out.println("\n\nI'm just guessing here.\n\n\nLet's make Cell " +
-                            x + " the number " + board[x] + ".");
-                    textArea1.appendText("\n\n\nI'm just guessing here.\n\n\nLet's make Cell " +
-                            x + " the number " + board[x] + ".");
+                    System.out.println("Let's make Cell " + x + " the Number " + board[x] + ".");
+                    textArea1.appendText("\nLet's make Cell " + x + " the Number " + board[x] + ".");
                     solveBoard();
                     // Pick a 2 possibility Cell and select the first option
 
@@ -1357,10 +1336,10 @@ public class Main extends Application {
                         clearedCount = guessClearedCount;
 
                         sysOutPrintBoard();
-                        System.out.println("Since Cell " + x + " as the number " + board[x].substring(0, 1) +
+                        System.out.println("Since Cell " + x + " as the Number " + board[x].substring(0, 1) +
                                 " causes the puzzle to become unsolvable, Cell "
                                 + x + " must be " + board[x].substring(1, 2) + " instead.");
-                        textArea1.appendText("\nSince Cell " + x + " as the number " + board[x].substring(0, 1) +
+                        textArea1.appendText("\nSince Cell " + x + " as the Number " + board[x].substring(0, 1) +
                                 " causes the puzzle to become unsolvable, Cell "
                                 + x + " must be " + board[x].substring(1, 2) + " instead.");
                         board[x] = board[x].substring(1, 2);
@@ -1370,25 +1349,19 @@ public class Main extends Application {
             } // If the puzzle can be solved by guessing at Cells with 2 options then solve it
 
             for (int x = 11; x <= 99; x++) {
-                if (x % 10 == 0) {
-                    x++;
-                }
+                if (x % 10 == 0) { x++; }
                 if (board[x].length() == 3 && clearedCount != 81) {
                     sysOutPrintBoard();
                     board[x] = board[x].substring(0, 1);
-                    System.out.println("\n\nI'm just guessing here.\n\n\nLet's make Cell " +
-                            x + " the number " + board[x] + ".");
-                    textArea1.appendText("\n\n\nI'm just guessing here.\n\n\nLet's make Cell " +
-                            x + " the number " + board[x] + ".");
+                    System.out.println("Let's make Cell " + x + " the Number " + board[x] + ".");
+                    textArea1.appendText("\nLet's make Cell " + x + " the Number " + board[x] + ".");
                     solveBoard();
                     // Pick a 3 possibility Cell and select the first option
 
                     if (clearedCount == 82) {
                         // If that causes an unsolvable puzzle then try the second option
                         for (int y = 11; y <= 99; y++) {
-                            if (y % 10 == 0) {
-                                y++;
-                            }
+                            if (y % 10 == 0) { y++; }
                             board[y] = guessBoard[y];
                             relations[y][20] = guessRelations[y];
                         } // Transfer guessBoard and guessRelations back to Board and Relations from storage
@@ -1396,10 +1369,8 @@ public class Main extends Application {
 
                         sysOutPrintBoard();
                         board[x] = board[x].substring(1, 2);
-                        System.out.println("\n\nI'm just guessing here.\n\n\nLet's make Cell " +
-                                x + " the number " + board[x] + ".");
-                        textArea1.appendText("\n\n\nI'm just guessing here.\n\n\nLet's make Cell " +
-                                x + " the number " + board[x] + ".");
+                        System.out.println("Let's make Cell " + x + " the Number " + board[x] + ".");
+                        textArea1.appendText("\nLet's make Cell " + x + " the Number " + board[x] + ".");
                         solveBoard();
                         // Pick a 3 possibility Cell and select the first option
 
@@ -1416,10 +1387,11 @@ public class Main extends Application {
 
 
                             sysOutPrintBoard();
-                            System.out.println("Since Cell " + x + " as the number " + board[x].substring(0, 1) +
+                            board[x] = board[x].substring(2, 3);
+                            System.out.println("Since Cell " + x + " as the Number " + board[x].substring(0, 1) +
                                     " or " + board[x].substring(1, 2) + " causes the puzzle to become unsolvable, Cell "
                                     + x + " must be " + board[x].substring(2, 3) + " instead.");
-                            textArea1.appendText("\nSince Cell " + x + " as the number " + board[x].substring(0, 1) +
+                            textArea1.appendText("\nSince Cell " + x + " as the Number " + board[x].substring(0, 1) +
                                     " or " + board[x].substring(1, 2) + " causes the puzzle to become unsolvable, Cell "
                                     + x + " must be " + board[x].substring(2, 3) + " instead.");
                             board[x] = board[x].substring(2, 3);
@@ -1431,7 +1403,21 @@ public class Main extends Application {
         } while (!complete && clearedCount != 81);
     }
 
+    private void testy() {
+        long startTime = System.nanoTime();
+        int x = 0;
+        do {
+            newSudoku("Easy", true);
+            solveBoard();
+            x++;
+        } while (x <= 25);
+        long totalTime = System.nanoTime() - startTime;
 
+        double time = (double) (totalTime / 1_000_000);
+        time /= 1_000;
+        System.out.println("25 puzzles created and solved in " + time + " seconds.");
+        textArea1.appendText("\n25 puzzles created and solved in " + time + " seconds.");
+    }
 
     public void newSudoku(String difficulty, boolean symmetry) {
         long startTime = System.nanoTime();
@@ -1445,8 +1431,8 @@ public class Main extends Application {
             assignDefaultValues();
             // Initial methods and assignments
 
-            System.out.println("Randomly generated puzzle of difficulty level " + difficulty + ".\nBegin:");
-            textArea1.appendText("\nRandomly generated puzzle of difficulty level " + difficulty + ".\nBegin:");
+            System.out.println("Randomly generated puzzle of difficulty level: " + difficulty + "\nBegin:");
+            textArea1.setText("Randomly generated puzzle of difficulty level: " + difficulty + "\nBegin:");
             sysOutPrintBoard();
 
             for (int x = 0; x <= 26; x++) {
@@ -1497,18 +1483,9 @@ public class Main extends Application {
         outputBoard();
         // Creates a new board
 
-
-
         int[] blocks = checkForMultiple();
         int blocksCount = blocks[82];
         blocks[82] = 0;
-        for (int z = 11; z <= 99; z++) {
-            if (z % 10 == 0) { z++; }
-            if (newBlocks[z] > 0) {
-                blocks[blocksCount] = z;
-                blocksCount++;
-            }
-        }
         Arrays.sort(blocks);
         for (int x = 1; x <= blocks.length - 1; x++) {
             if (blocks[x] == blocks[x - 1]) {
@@ -1534,21 +1511,19 @@ public class Main extends Application {
             }
             theBlocks = addCommasAndAnd(theBlocks);
             theBlocks = theBlocks.replace("and", "or");
-            System.out.println("To prevent multiple solutions do not clear Cell" + theBlocks + ".");
-            textArea1.appendText("\nTo prevent multiple solutions do not clear Cell" + theBlocks + ".");
+            System.out.println("To prevent multiple solutions do not clear cell" + theBlocks + ".");
+            textArea1.appendText("\nTo prevent multiple solutions do not clear cell" + theBlocks + ".");
         }
         if (blocksCount == 1) {
-            System.out.println("To prevent multiple solutions do not clear Cell " + blocks[0] + ".");
-            textArea1.appendText("\nTo prevent multiple solutions do not clear Cell " + blocks[0] + ".");
+            System.out.println("To prevent multiple solutions do not clear cell " + blocks[0] + ".");
+            textArea1.appendText("\nTo prevent multiple solutions do not clear cell " + blocks[0] + ".");
         }
         // Marks which Cells would cause multiple solutions to be possible
-
-
 
         int[] partners = new int[100];
         String textSymmetry = "";
         if (symmetry) {
-            int lineOfSymmetry = ThreadLocalRandom.current().nextInt(0, 3);
+            int lineOfSymmetry = ThreadLocalRandom.current().nextInt(0, 4);
             for (int x = 11; x <= 99; x++) {
                 if (x % 10 == 0) { x++; }
                 partners[x] = x;
@@ -1604,19 +1579,29 @@ public class Main extends Application {
             textArea1.appendText("\n\nNow begin removing numbers.\n");
         }
 
+        String possibleCells = "";
+        for (int x = 11; x <= 99; x++) {
+            if (x % 10 == 0) { x++; }
+            possibleCells += x + ", ";
+        }
+        for (int x = 1; x <= blocks.length - 1; x++) {
+            possibleCells = possibleCells.replace(blocks[x] + ", ", "");
+            if (symmetry) {  possibleCells = possibleCells.replace(partners[blocks[x]] + ", ", ""); }
+        }
+
         do {
-            lastCell = ThreadLocalRandom.current().nextInt(11, 99);
-            if (symmetry && Arrays.toString(blocks).contains("" + partners[lastCell])) { lastCell = 20; }
-            if (Arrays.toString(blocks).contains("" + lastCell)) { lastCell = 20; }
-            // Keeps the numbers that would make the puzzle have multiple solutions from being removed
+            lastCell = ThreadLocalRandom.current().nextInt(0, possibleCells.length() / 4);
+            if (possibleCells.length() > 3) {
+                lastCell = Integer.parseInt(possibleCells.substring(4 * lastCell, 4 * lastCell + 2));
+            } else {
+                lastCell = 0;
+            }
+            possibleCells = possibleCells.replace(lastCell + ", ", "");
+            if (symmetry) { possibleCells = possibleCells.replace(partners[lastCell] + ", ", ""); }
 
             correctDifficulty = true;
-            if (lastCell % 10 != 0 && !board[lastCell].equalsIgnoreCase("")) {
-                //if (tempBoard[lastCell].equalsIgnoreCase("")) {
-                    tempBoard[lastCell] += board[lastCell];
-                //} else {
-
-                //}
+            if (possibleCells.length() > 3 && !board[lastCell].equalsIgnoreCase("")) {
+                tempBoard[lastCell] += board[lastCell];
                 board[lastCell] = "";
                 cellsLeft--;
                 if (symmetry) {
@@ -1629,13 +1614,11 @@ public class Main extends Application {
                 assignTempValues(lastCell, symmetry, partners);
 
 
-                if (symmetry) {
-                    System.out.println("Remove Cells " + lastCell + " and " + partners[lastCell] + ".");
-                    textArea1.appendText("\nRemove Cells " + lastCell + " and " + partners[lastCell] + ".");
-                } else {
-                    System.out.println("Remove Cell " + lastCell + ".");
-                    textArea1.appendText("\nRemove Cell " + ".");
-                }
+                String tag = lastCell + "|" +
+                        ((symmetry && partners[lastCell] != lastCell) ? partners[lastCell] + "|" : "");
+                System.out.println("Remove Cell" + addCommasAndAnd(tag) + ".");
+                textArea1.appendText("\nRemove Cell" + addCommasAndAnd(tag) + ".");
+
 
                 board[lastCell] = "X";
                 if (symmetry) { board[partners[lastCell]] = "X"; }
@@ -1645,7 +1628,6 @@ public class Main extends Application {
                 System.out.println("Candidate number board:");
                 textArea1.appendText("\nCandidate number board:");
                 sysOutPrintTempBoard();
-
 
 
                 correctDifficulty = testDifficultyLevel(intDiff, finalBoard, lastCell, symmetry, partners);
@@ -1668,8 +1650,7 @@ public class Main extends Application {
                     cellsLeft++;
                 }
             } // Puts the last Cell and it's partner back on the board if cannot be solved on the current difficulty
-
-        } while (cellsLeft > 47 - 4 * intDiff);
+        } while (cellsLeft > 47 - 4 * intDiff && possibleCells.length() > 3);
         // Removes Cells until enough have been removed
 
         if (clearedCount == 81) {
@@ -1693,31 +1674,52 @@ public class Main extends Application {
     }
 
     private int[] checkForMultiple() {
-        int[] blocks = new int[83];
-        int blocksCount = 0;
+
+
+
+//        textFields[11].setText("123456789456789123789123456312645978645978312978312645231564897564897231897231564");
+//        inputBoard();
+//        sysOutPrintBoard();
+
+
+        System.out.println("Begin checking for Cells that could cause multiple solutions to be possible if removed.");
+        textArea1.appendText("\nBegin checking for Cells that could cause multiple solutions to be possible if removed.");
+
+
+
 
         String[] threePieceR = new String[27];
         String[] threePieceC = new String[27];
         for (int x = 0; x <= 26; x++) {
             threePieceR[x] = board[11 + (3 * x) + (x / 3)] + board[12 + (3 * x) + (x / 3)] +
                     board[13 + (3 * x) + (x / 3)];
-            threePieceC[x] = board[11 + 30 * (x / 9) + (x % 9)] + board[21 + 30 * (x / 9) + (x % 9)] +
-                    board[31 + 30 * (x / 9) + (x % 9)];
+            threePieceC[x] = board[11 + 30 * (x % 3) + (x / 3)] + board[21 + 30 * (x % 3) + (x / 3)] +
+                    board[31 + 30 * (x % 3) + (x / 3)];
         } // Breaks up the board into 3 piece chunks by Row and Column
 
         int[] rcSearch = new int[]{ // Combinations of acceptable Rows/Columns to compare
                 147, 148, 149, 157, 158, 159, 167, 168, 169,
                 247, 248, 249, 257, 258, 259, 267, 268, 269,
-                347, 348, 349, 357, 358, 359, 367, 368, 369};
+                347, 348, 349, 357, 358, 359, 367, 368, 369
+        };
 
-        for (int rowsOrColumns = 0; rowsOrColumns <= 0; rowsOrColumns++) {
+        int[][] blocksAll = new int[200][];
+        int chainCount = -1;
+        int[] blocksReturn = new int[200];
+        for (int rowsOrColumns = 0; rowsOrColumns <= 1; rowsOrColumns++) {
             for (int search = 0; search <= 2; search++) {
                 for (int x = 0; x <= 26; x++) {
-                    int[] intRC = new int[3]; // The Row chunks to search through
+                    int[] intRC = new int[3]; // The Row or Column chunks to search through
+                    String combine = ""; // The combined chunks for easier referencing
                     intRC[0] = (rcSearch[x] / 100 - 1) * 3 + search;
                     intRC[1] = ((rcSearch[x] / 10) % 10 - 1) * 3 + search;
                     intRC[2] = (rcSearch[x] % 10 - 1) * 3 + search;
-                    String combine = threePieceR[intRC[0]] + threePieceR[intRC[1]] + threePieceR[intRC[2]];
+                    if (rowsOrColumns == 0) {
+                        combine = threePieceR[intRC[0]] + threePieceR[intRC[1]] + threePieceR[intRC[2]];
+                    }
+                    if (rowsOrColumns == 1) {
+                        combine = threePieceC[intRC[0]] + threePieceC[intRC[1]] + threePieceC[intRC[2]];
+                    }
                     int[] howMany = new int[10];
                     for (int y = 1; y <= 9; y++) {
                         howMany[y] = 9 - combine.replace("" + y, "").length();
@@ -1736,18 +1738,65 @@ public class Main extends Application {
                             threeLocation++;
                         }
                     }
+
                     if (threes[2] > 0) { // If 3 numbers appear 3 times
-                        blocks[blocksCount] = getCellInt((rcSearch[x] / 100 - 1), 3 * search + 1);
-                        blocksCount++;
-                        blocks[blocksCount] = getCellInt(((rcSearch[x] / 10) % 10 - 1), 3 * search + 1);
-                        blocksCount++;
-                        blocks[blocksCount] = getCellInt((rcSearch[x] % 10 - 1), 3 * search + 1);
-                        blocksCount++;
+                        chainCount++;
+                        blocksAll[chainCount] = new int[9];
+                        for (int y = 0; y <= 8; y += 3) {
+                            blocksAll[chainCount][y] = getCellInt((rcSearch[x] / 100 - 1 +
+                                    (9 * rowsOrColumns)), combine.indexOf("" + threes[y / 3]) + 3 * search);
+                            blocksAll[chainCount][y + 1] = getCellInt(((rcSearch[x] / 10) % 10 - 1 +
+                                    (9 * rowsOrColumns)), combine.indexOf("" + threes[y / 3], 3) + 3 * search - 3);
+                            blocksAll[chainCount][y + 2] = getCellInt((rcSearch[x] % 10 - 1 +
+                                    (9 * rowsOrColumns)), combine.indexOf("" + threes[y / 3], 6) + 3 * search - 6);
+                        }
+                        int[] orderedArray = blocksAll[chainCount];
+                        if (rowsOrColumns == 1) {
+                            for (int b = 0; b <= 8; b++) {
+                                orderedArray[b] = 10 * (orderedArray[b] % 10) + orderedArray[b] / 10;
+                            }
+                            Arrays.sort(orderedArray);
+                            for (int b = 0; b <= 8; b++) {
+                                orderedArray[b] = 10 * (orderedArray[b] % 10) + orderedArray[b] / 10;
+                            }
+                        } else {
+                            Arrays.sort(orderedArray);
+                        }
+                        String orderedString = orderedArray[0] + "|" + orderedArray[1] + "|" + orderedArray[2] + "|" +
+                                orderedArray[3] + "|" + orderedArray[4] + "|" + orderedArray[5] + "|" + orderedArray[6]
+                                + "|" + orderedArray[7] + "|" + orderedArray[8] + "|";
+                        System.out.println("Found a dependent chain in Cell" + addCommasAndAnd(orderedString));
+                        textArea1.appendText("\nFound a dependent chain in Cell" + addCommasAndAnd(orderedString));
+                        chainCount++; // 2 spots because you need to mark 2 of these Cells to be sure of no multiples
+                        blocksAll[chainCount] = new int[10];
                     }
                     if (threes[2] == 0 && threes[1] > 0) { // If 2 numbers appear 3 times
-                        blocks[blocksCount] = getCellInt(((rcSearch[x] / 10) % 10 - 1),
-                                combine.indexOf("" + threes[1], 3) + 3 * search - 3);
-                        blocksCount++;
+                        chainCount++;
+                        blocksAll[chainCount] = new int[6];
+                        for (int y = 0; y <= 5; y += 3) {
+                            blocksAll[chainCount][y] = getCellInt((rcSearch[x] / 100 - 1 +
+                                    (9 * rowsOrColumns)), combine.indexOf("" + threes[y / 3]) + 3 * search);
+                            blocksAll[chainCount][y + 1] = getCellInt(((rcSearch[x] / 10) % 10 - 1 +
+                                    (9 * rowsOrColumns)), combine.indexOf("" + threes[y / 3], 3) + 3 * search - 3);
+                            blocksAll[chainCount][y + 2] = getCellInt((rcSearch[x] % 10 - 1 +
+                                    (9 * rowsOrColumns)), combine.indexOf("" + threes[y / 3], 6) + 3 * search - 6);
+                        }
+                        int[] orderedArray = blocksAll[chainCount];
+                        if (rowsOrColumns == 1) {
+                            for (int b = 0; b <= 5; b++) {
+                                orderedArray[b] = 10 * (orderedArray[b] % 10) + orderedArray[b] / 10;
+                            }
+                            Arrays.sort(orderedArray);
+                            for (int b = 0; b <= 5; b++) {
+                                orderedArray[b] = 10 * (orderedArray[b] % 10) + orderedArray[b] / 10;
+                            }
+                        } else {
+                            Arrays.sort(orderedArray);
+                        }
+                        String orderedString = orderedArray[0] + "|" + orderedArray[1] + "|" + orderedArray[2] + "|" +
+                                orderedArray[3] + "|" + orderedArray[4] + "|" + orderedArray[5] + "|";
+                        System.out.println("Found a dependent chain in Cell" + addCommasAndAnd(orderedString));
+                        textArea1.appendText("\nFound a dependent chain in Cell" + addCommasAndAnd(orderedString));
                     }
                     if (twos[1] > 0) { // If 2 numbers appear in the same 2 spots in 2 chunks
                         int[] correctOverlaps = new int[]{1245, 1278, 1346, 1379, 2356, 2389, 4578, 4679};
@@ -1769,9 +1818,34 @@ public class Main extends Application {
                                 }
                                 for (int a = 0; a <= 7; a++) {
                                     if (locations == correctOverlaps[a]) {
-                                        blocks[blocksCount] = getCellInt(intRC[locations / 3000] / 3,
-                                                (locations / 1000 - 1) % 3 + (search * 3));
-                                        blocksCount++;
+                                        chainCount++;
+                                        blocksAll[chainCount] = new int[4];
+                                        blocksAll[chainCount][0] = getCellInt(intRC[(locations / 1000 - 1) / 3] / 3 +
+                                                (9 * rowsOrColumns), (locations / 1000 - 1) % 3 + (search * 3));
+                                        blocksAll[chainCount][1] = getCellInt(intRC[((locations / 100) % 10 - 1) / 3] / 3 +
+                                                (9 * rowsOrColumns), ((locations / 100) % 10 - 1) % 3 + (search * 3));
+                                        blocksAll[chainCount][2] = getCellInt(intRC[((locations / 10) % 10 - 1) / 3] / 3 +
+                                                (9 * rowsOrColumns), ((locations / 10) % 10 - 1) % 3 + (search * 3));
+                                        blocksAll[chainCount][3] = getCellInt(intRC[(locations % 10 - 1) / 3] / 3 +
+                                                (9 * rowsOrColumns), (locations % 10 - 1) % 3 + (search * 3));
+                                        int[] orderedArray = blocksAll[chainCount];
+                                        if (rowsOrColumns == 1) {
+                                            for (int b = 0; b <= 3; b++) {
+                                                orderedArray[b] = 10 * (orderedArray[b] % 10) + orderedArray[b] / 10;
+                                            }
+                                            Arrays.sort(orderedArray);
+                                            for (int b = 0; b <= 3; b++) {
+                                                orderedArray[b] = 10 * (orderedArray[b] % 10) + orderedArray[b] / 10;
+                                            }
+                                        } else {
+                                            Arrays.sort(orderedArray);
+                                        }
+                                        String orderedString = orderedArray[0] + "|" + orderedArray[1] + "|" +
+                                                orderedArray[2] + "|" + orderedArray[3] + "|";
+                                        System.out.println("Found a dependent chain in Cell" +
+                                                addCommasAndAnd(orderedString));
+                                        textArea1.appendText("\nFound a dependent chain in Cell" +
+                                                addCommasAndAnd(orderedString));
                                         a = 7;
                                         z = howManyTwos - 1;
                                         y = howManyTwos - 2;
@@ -1783,19 +1857,178 @@ public class Main extends Application {
                 }
             }
         }
-        blocks[82] = blocksCount;
-        return blocks;
+        int[] compare = new int[100];
+        for (int x = 0; x <= chainCount - 1; x++) {
+            for (int y = 0; y <= blocksAll[x].length - 1; y++) {
+                if (blocksAll[x][y] != 0) {
+                    compare[blocksAll[x][y]] += 1;
+                }
+            }
+        } // Compile all the Cells that could lead to multiple solutions and find if there are overlapping Cells
+        int counter = 0;
+        for (int x = 11; x <= 99; x++) {
+            if (compare[x] > 1) {
+                counter++;
+            }
+        } // Find how many overlapping Cells there are
+        int[] overlap = new int[100];
+        counter = 0;
+        for (int x = 11; x <= 99; x++) {
+            if (compare[x] > 1) {
+                overlap[counter] = x;
+                counter++;
+            }
+        } // Put the overlapping Cells in an array
+        counter = -1;
+        for (int x = 11; x <= 99; x++) {
+            if (compare[x] > 2) {
+                counter++;
+                blocksReturn[counter] = overlap[x];
+            }
+        } // Marks the ones with Cells that appear in 3 chains to use those first
+        boolean[] found = new boolean[100];
+        int tripleNum = 0;
+        for (int x = 0; x <= chainCount; x++) {
+            found[x] = false;
+            if (blocksAll[x].length < 10) {
+                for (int y = 0; y <= blocksAll[x].length - 1; y++) {
+                    for (int z = 0; z <= counter; z++) {
+                        if (blocksAll[x][y] == blocksReturn[z]) {
+                            found[x] = true;
+                            if (x < chainCount) {
+                                if (blocksAll[x + 1].length == 10) { tripleNum = blocksReturn[z]; }
+                            }
+                            z = counter;
+                            y = blocksAll[x].length - 1;
+                        }
+                    }
+                }
+            } // If there is a Cell in the chain already being returned then mark it found
+
+            if (!found[x] && blocksAll[x].length < 10) {
+                for (int y = 0; y <= blocksAll[x].length - 1; y++) {
+                    for (int z = 11; z <= 99; z++) {
+                        if (blocksAll[x][y] == overlap[z]) {
+                            found[x] = true;
+                            counter++;
+                            blocksReturn[counter] = blocksAll[x][y];
+                            if (x < chainCount) {
+                                if (blocksAll[x + 1].length == 10) { tripleNum = blocksReturn[counter]; }
+                            }
+                            z = 99;
+                            y = blocksAll[x].length;
+                        }
+                    }
+                } // If there is a Cell in the chain that overlaps with another chain then return that Cell
+
+                if (!found[x]) {
+                    found[x] = true;
+                    counter++;
+                    blocksReturn[counter] = blocksAll[x][ThreadLocalRandom.current().nextInt(0, blocksAll[x].length)];
+                    if (x < chainCount) {
+                        if (blocksAll[x + 1].length == 10) { tripleNum = blocksReturn[counter]; }
+                    }
+                } // If not then return a random Cell in the chain
+
+            } // If there is not a Cell in the chain already being returned then pick one
+
+            if (blocksAll[x].length == 10) {
+                String test = "";
+                int testCounter = -1;
+                for (int y = 0; y <= 8; y++) {
+                    for (int z = 0; z <= counter; z++) {
+                        if (blocksAll[x - 1][y] == blocksReturn[z]) {
+                            testCounter ++;
+                            test += "" + y;
+                        }
+                    }
+                } // Counts how many Cells in the chain are already being returned
+
+                if (testCounter == 0) {
+                    String chunkString = "012345678";
+                    for (int y = 0; y <= 8; y++) {
+                        if (blocksAll[x - 1][y] / 10 == tripleNum / 10 ||
+                                blocksAll[x - 1][y] % 10 == tripleNum % 10 ||
+                                board[blocksAll[x - 1][y]].equalsIgnoreCase(board[tripleNum])) {
+                            chunkString = chunkString.replace(y + "", "");
+                        }
+                    } // Removes the potential Cells that do not meet the criteria
+
+                    int differentChunkCell = ThreadLocalRandom.current().nextInt(0, 2);
+                    differentChunkCell =
+                            Integer.parseInt(chunkString.substring(differentChunkCell, differentChunkCell + 1));
+                    counter++;
+                    blocksReturn[counter] = blocksAll[x - 1][differentChunkCell];
+                    found[x] = true;
+
+                } // If only one Cell is being returned then add the other
+
+                if (!found[x]) {
+                    for (int y = 0; y <= testCounter - 1; y++) {
+                        int yIndex = Integer.parseInt(test.substring(y, y + 1));
+                        for (int z = y + 1; z <= testCounter; z++) {
+                            int zIndex = Integer.parseInt(test.substring(z, z + 1));
+                            if (yIndex / 3 != zIndex / 3 && yIndex % 3 != zIndex % 3 &&
+                                    !board[blocksAll[x - 1][yIndex]].equalsIgnoreCase(
+                                            board[blocksAll[x - 1][zIndex]])) {
+                                counter++;
+                                blocksReturn[counter] = blocksAll[x - 1][yIndex];
+                                counter++;
+                                blocksReturn[counter] = blocksAll[x - 1][zIndex];
+                                found[x] = true;
+                                z = testCounter;
+                                y = testCounter - 1;
+                            }
+                        }
+                    } // Checks if any two Cells meet the criteria and if so then returns the two Cells
+
+                    if (!found[x]) {
+                        String chunkString = "012345678";
+                        for (int y = 0; y <= 8; y++) {
+                            if (blocksAll[x - 1][y] / 10 == tripleNum / 10 ||
+                                    blocksAll[x - 1][y] % 10 == tripleNum % 10 ||
+                                    board[blocksAll[x - 1][y]].equalsIgnoreCase(board[tripleNum])) {
+                                chunkString = chunkString.replace(y + "", "");
+                            }
+                        } // Removes the potential Cells that do not meet the criteria
+
+                        int differentChunkCell = ThreadLocalRandom.current().nextInt(0, 2);
+                        differentChunkCell =
+                                Integer.parseInt(chunkString.substring(differentChunkCell, differentChunkCell + 1));
+                        counter++;
+                        blocksReturn[counter] = blocksAll[x - 1][differentChunkCell];
+                        found[x] = true;
+                    } // If no groups of two Cells meet the criteria then pick another one that does
+
+                } // If there are multiple Cells being returned already then make sure at least two fit the criteria
+
+            } // Handles the second number needed for chains of 3 numbers in 3 chunks
+
+        } // Selects the Cells to not erase
+
+        int[] tempBlocks = new int[200];
+        counter = -1;
+        for (int x = 0; x <= blocksReturn.length - 1; x++) {
+            if (blocksReturn[x] != 0) {
+                counter++;
+                tempBlocks[counter] = blocksReturn[x];
+            }
+        }
+        blocksReturn = new int[83];
+        for (int x = 0; x <= counter; x++) {
+            blocksReturn[x] = tempBlocks[x];
+        }
+        // Erases blanks in the return array if there are any
+
+        blocksReturn[82] = counter + 1;
+        return blocksReturn;
     }
     private boolean testDifficultyLevel(int difficulty, String[] finalBoard, int lastCell, boolean symmetry, int[] partners) {
-        System.out.println("\nTesting Difficulty");
-        textArea1.appendText("\n\nTesting Difficulty");
+        System.out.println("Testing Difficulty");
+        textArea1.appendText("\nTesting Difficulty");
         guess = false;
         complete = false;
         clearedCount = 0;
-        //groupsDecs();
-
-
-
 
         for (int x = 11; x <= 99; x++) {
             if (x % 10 == 0) { x++; }
@@ -1808,18 +2041,12 @@ public class Main extends Application {
             }
         }
         sysOutPrintBoard();
-        // Now that you have the board output and -board output
+        // Now that you have the board output and candidate board output
 
 
 
-
-
-
-
-
-
-
-
+        clearRelations(lastCell);
+        if (symmetry) { clearRelations(partners[lastCell]); }
         for (int x = 1; x <= difficulty; x++) {
             boolean[] test = new boolean[6];
             do {
@@ -1829,6 +2056,8 @@ public class Main extends Application {
                 test[3] = false;
                 test[4] = false;
                 test[5] = false;
+
+
                 if (clearedCount < 81)                    { test[1] = onlyInGroup(finalBoard, lastCell, symmetry, partners); }
                 if (clearedCount < 81)                    { test[0] = clearRelations(finalBoard, lastCell, symmetry, partners); }
                 if (clearedCount < 81)                    { test[1] = onlyInGroup(finalBoard, lastCell, symmetry, partners); }
@@ -1843,23 +2072,19 @@ public class Main extends Application {
         if (!board[lastCell].equalsIgnoreCase(finalBoard[lastCell])) { results = false; }
         if (symmetry && !board[partners[lastCell]].equals(finalBoard[partners[lastCell]])) { results = false; }
 
+        String tag = lastCell + "|" + ((symmetry && partners[lastCell] != lastCell) ? partners[lastCell] + "|" : "");
         if (results) {
-            System.out.println("\nBoard can be solved on current difficulty.\n");
-            textArea1.appendText("\n\nBoard can be solved on current difficulty.\n");
+            System.out.println("\nCell" + addCommasAndAnd(tag) + ((tag.length() > 3) ? " are": " is") +
+                    " solved.  The board can be solved on the current difficulty.\n");
+            textArea1.appendText("\n\nCell" + addCommasAndAnd(tag) + ((tag.length() > 3) ? " are": " is") +
+                    " solved.  The board can be solved on the current difficulty.\n");
             finalBoard[lastCell] = "";
             if (symmetry) { finalBoard[partners[lastCell]] = ""; }
         } else {
-            if (symmetry && lastCell != partners[lastCell]) {
-                System.out.println("\nBoard cannot be solved on current difficulty.\nReplace cell " +
-                        lastCell + " and " + partners[lastCell] + ".\n");
-                textArea1.appendText("\n\nBoard cannot be solved on current difficulty.\nReplace cell " +
-                        lastCell + " and " + partners[lastCell] + ".\n");
-            } else {
-                System.out.println("\nBoard cannot be solved on current difficulty.\nReplace cell " +
-                        lastCell + ".\n");
-                textArea1.appendText("\n\nBoard cannot be solved on current difficulty.\nReplace cell " +
-                        lastCell + ".\n");
-            }
+            System.out.println("\nThe board cannot be solved on the current difficulty.\nReplace cell" +
+                    addCommasAndAnd(tag) + ".\n");
+            textArea1.appendText("\n\nThe board cannot be solved on the current difficulty.\nReplace cell" +
+                    addCommasAndAnd(tag) + ".\n");
         }
 
         for (int x = 11; x <= 99; x++) {
