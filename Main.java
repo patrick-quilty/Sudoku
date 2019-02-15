@@ -1293,6 +1293,18 @@ public class Main extends Application {
     private boolean multipleGroupsMultipleNumbersBoard() {
         boolean changes = false;
 
+        int[] unsolved = new int[81 - clearedCount];
+        int count = -1;
+        for (int x = 11; x <= 99; x++) {
+            if (x % 10 == 0) { x++; }
+            if (!relations[x][20].equalsIgnoreCase("Cleared")) { count++; unsolved[count] = x;}
+        } // Gather unsolved Cells into an array
+
+        for (int x = 0; x <= count; x++) {
+            System.out.println(unsolved[x]);
+        }
+
+
 
         return changes;
     }
@@ -1799,12 +1811,12 @@ public class Main extends Application {
                         textArea1.appendText("\nFound a dependent chain in Cell" + addCommasAndAnd(orderedString));
                     }
                     if (twos[1] > 0) { // If 2 numbers appear in the same 2 spots in 2 chunks
-                        int[] correctOverlaps = new int[]{1245, 1278, 1346, 1379, 2356, 2389, 4578, 4679};
+                        int[] correctOverlaps = new int[] {1245, 1278, 1346, 1379, 2356, 2389, 4578, 4679, 5689};
                         String tempCombine;
                         int locations;
                         int howManyTwos = 2;
-                        if (twos[2] > 0) howManyTwos = 3;
-                        if (twos[3] > 0) howManyTwos = 4;
+                        if (twos[2] > 0) { howManyTwos = 3; }
+                        if (twos[3] > 0) { howManyTwos = 4; }
                         for (int y = 0; y <= howManyTwos - 2; y++) {
                             for (int z = y + 1; z <= howManyTwos - 1; z++) {
                                 tempCombine = combine.replace("" + twos[y], "X");
@@ -1812,11 +1824,9 @@ public class Main extends Application {
                                 locations = 0;
                                 for (int a = 0; a <= 3; a++) {
                                     locations += tempCombine.indexOf("X", (locations / 10) % 10) + 1;
-                                    if (a != 3) {
-                                        locations *= 10;
-                                    }
+                                    if (a != 3) { locations *= 10; }
                                 }
-                                for (int a = 0; a <= 7; a++) {
+                                for (int a = 0; a <= 8; a++) {
                                     if (locations == correctOverlaps[a]) {
                                         chainCount++;
                                         blocksAll[chainCount] = new int[4];
@@ -1846,7 +1856,7 @@ public class Main extends Application {
                                                 addCommasAndAnd(orderedString));
                                         textArea1.appendText("\nFound a dependent chain in Cell" +
                                                 addCommasAndAnd(orderedString));
-                                        a = 7;
+                                        a = 8;
                                         z = howManyTwos - 1;
                                         y = howManyTwos - 2;
                                     }
